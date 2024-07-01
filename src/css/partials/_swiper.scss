@@ -1,0 +1,17 @@
+.swiper {
+  overflow: hidden;
+}
+
+.swiper-wrapper {
+  display: flex;
+}
+
+.swiper-slide {
+  overflow: hidden;
+  flex-shrink: 0;
+  display: grid;
+}
+
+.swiper-horizontal {
+  touch-action: pan-y;
+}

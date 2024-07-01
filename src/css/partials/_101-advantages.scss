@@ -1,0 +1,49 @@
+.advantages {
+  padding: 70px 0;
+
+  @media (max-width: 600px) {
+    padding: 50px 0;
+  }
+
+  &__content {
+    h3 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #383838;
+      margin-bottom: 12px;
+      margin-top: 24px;
+
+      @media (max-width: 900px) {
+        display: inline-block;
+        margin-top: 12px;
+        margin-left: 24px;
+        vertical-align: top;
+      }
+
+      @media (max-width: 600px) {
+        display: block;
+        margin: 0;
+        margin-top: 24px;
+        margin-bottom: 12px;
+        vertical-align: unset;
+      }
+    }
+
+    h3+p {
+      font-size: 18px;
+      line-height: 1.5;
+      color: #697586;
+    }
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+}

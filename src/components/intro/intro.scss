@@ -1,0 +1,238 @@
+.intro {
+  padding: 200px 0;
+  margin-bottom: 70px;
+
+  @media (max-width: 600px) {
+    padding-top: 100px;
+    padding-bottom: 300px;
+    margin-bottom: 50px;
+  }
+
+  &__content {
+    max-width: 475px;
+    width: 100%;
+
+    @media (max-width: 600px) {
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+
+      span {
+        color: #FF5EA6;
+      }
+
+      @media (max-width: 600px) {
+        font-size: 26px;
+        text-align: center;
+      }
+    }
+
+    h1+p {
+      color: #697586;
+      font-size: 24px;
+      margin-bottom: 48px;
+
+      @media (max-width: 600px) {
+        font-size: 16px;
+        text-align: center;
+        margin-bottom: 32px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      h1+p+a {
+        margin: 0 auto;
+      }
+    }
+  }
+
+  &__search {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    width: 100%;
+
+    @media (max-width: 600px) {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__search-block {
+    position: relative;
+
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #DFE1E3;
+    background-color: #FFF;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+    height: 44px;
+    width: 100%;
+
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    color: #697586;
+
+    >span {
+      width: 100%;
+      text-wrap: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
+    }
+
+    span:hover {
+      color: #FD9BD4;
+      cursor: pointer;
+    }
+
+    >img.active {
+      transform: rotate(180deg);
+    }
+
+    @media (max-width: 600px) {
+      grid-column: span 2;
+    }
+
+    &.span-2 {
+      grid-column: span 2;
+    }
+  }
+
+  &__search-dropdown {
+    position: absolute;
+    top: 40px;
+    left: -1px;
+    z-index: 2;
+
+    width: calc(100% + 2px);
+
+    border: 1px solid transparent;
+    background-color: #fff;
+
+    span {
+      display: block;
+      line-height: 2.5;
+      text-wrap: nowrap;
+    }
+
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: 0.5s;
+
+    padding-left: 12px;
+
+    &.active {
+      grid-template-rows: 1fr;
+      padding-top: 0;
+      padding-bottom: 12px;
+      border: 1px solid #DFE1E3;
+      border-top: unset;
+    }
+
+    .min-height-0 {
+      max-height: 300px;
+      overflow: hidden scroll;
+      background-color: #fff;
+      position: relative;
+      z-index: 5;
+
+      /* width */
+      &::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+        background: #ffecf4;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: #FF5EA6;
+      }
+    }
+  }
+
+  &__search-text {
+    grid-column: span 2;
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      height: 44px;
+
+      border-radius: 6px;
+      border: 1px solid #DFE1E3;
+
+      font-family: 'Open Sans', sans-serif;
+      font-size: 16px;
+      color: #697586;
+
+      &::placeholder {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+        color: #697586;
+      }
+
+      &:hover::placeholder {
+        color: #FD9BD4;
+      }
+    }
+  }
+
+  &__search-button {
+    grid-column: span 2;
+
+    button {
+      font-weight: 600;
+      padding: 13px 20px;
+      border-radius: 6px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+
+      width: 100%;
+    }
+
+    span {
+      @media (max-width: 600px) {
+        display: none;
+      }
+    }
+  }
+}
+
+.bg-flowers {
+  background-image: url("/images/bg-flowers.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  @media (max-width: 600px) {
+    background-image: url("/images/bg-flowers-small.jpg");
+  }
+}
+
+.bg-candles {
+  background-image: url("/images/bg-candles.jpg");
+  background-repeat: no-repeat;
+  background-position: center 75%;
+  background-size: cover;
+
+  @media (max-width: 600px) {
+    background-image: url("/images/bg-candles-small.jpg");
+  }
+}

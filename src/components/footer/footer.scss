@@ -1,0 +1,147 @@
+.footer {
+  width: 100%;
+  padding: 48px 0 24px 0;
+  background-color: #383838;
+
+  &__content {
+    dl {
+      font-size: 16px;
+    }
+
+    dt {
+      color: #B0A6BD;
+      margin-bottom: 10px;
+    }
+
+    dd {
+      color: #FCFCFF;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    a:hover {
+      opacity: 0.6;
+    }
+
+    a.disabled {
+      opacity: 0.6;
+    }
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 48px;
+    gap: 24px;
+
+    @media (max-width: 750px) {
+      flex-direction: column;
+    }
+  }
+
+  &__logo {
+    width: 290px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+
+    svg {
+      margin-top: 10px;
+    }
+  }
+
+  &__image {
+    img {
+      width: 100%;
+    }
+  }
+
+  &__pages {
+    width: 812px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+
+    @media (max-width: 750px) {
+      width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      justify-content: start;
+    }
+
+    @media (max-width: 500px) {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      justify-content: start;
+    }
+
+    a {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+
+  &__sub {
+    padding-top: 20px;
+    border-top: 1px solid #B0A6BD;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+    }
+
+    color: #B0A6BD;
+
+    span {
+      &:nth-child(1) {
+        font-style: normal;
+      }
+
+      &:nth-child(2) {
+        font-style: italic;
+      }
+
+      &:nth-child(3) {
+        font-style: normal;
+        font-weight: 700;
+        margin-left: -2px;
+      }
+    }
+  }
+
+  .call-me {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #FD9BD4;
+    cursor: pointer;
+
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
