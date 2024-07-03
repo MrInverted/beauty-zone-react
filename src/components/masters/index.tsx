@@ -1,11 +1,10 @@
 import React from 'react'
-
 import "./masters.scss"
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 
-import { masterCardPreviewBoth } from '../../utils/mastersCard'
+import { masterCardPreviewBoth } from '../../utils/catalogue'
 import { MastersCardPreview } from './MastersCardPreview'
 
 

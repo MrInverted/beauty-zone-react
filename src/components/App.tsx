@@ -1,27 +1,31 @@
+import React from 'react';
+
+import { Route, Routes } from 'react-router-dom';
+
+import { useAppSelector } from '../redux/store';
 
 import Header from './header';
-import Intro from './intro';
-import Categories from './categories';
-import Masters from './masters';
-import Catalogue from './catalogue';
-import About from './about';
 import Footer from './footer';
+import { IntroPage } from '../pages/IntroPage';
+import { Login } from './modals/Login';
+import { Recovery } from './modals/Recovery';
+import { Register } from './modals/Register';
 
 function App() {
+  const { isLogin, isRegister, isRecovery } = useAppSelector(store => store.modals)
+
   return <>
     <Header />
 
-    <Intro />
-
-    <Categories />
-
-    <Masters />
-
-    <Catalogue />
-
-    <About />
+    <Routes>
+      <Route path='/' element={<IntroPage />} />
+    </Routes>
 
     <Footer />
+
+    {isLogin && <Login />}
+    {isRecovery && <Recovery />}
+    {isRegister && <Register />}
   </>;
 }
 

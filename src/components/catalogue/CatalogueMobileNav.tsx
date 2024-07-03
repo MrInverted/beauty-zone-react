@@ -6,6 +6,8 @@ interface ICatalogueMobileNav {
   onShowFiltersClick: () => void;
 }
 
+
+
 function CatalogueMobileNav({ sort, setSort, onShowFiltersClick }: ICatalogueMobileNav) {
   const [isMobileSortOpened, setIsMobileSortOpened] = React.useState(false);
   const sortItems = ["По популярности", "По рейтингу", "По цене"];
@@ -21,13 +23,16 @@ function CatalogueMobileNav({ sort, setSort, onShowFiltersClick }: ICatalogueMob
         <span>Фильтры</span>
       </button>
 
-      <button className={`btn-light catalogue__mobile-sort ${isMobileSortOpened ? 'active' : ''}`} onClick={onSortCardsClick}>
+      <button
+        onClick={onSortCardsClick}
+        className={`btn-light catalogue__mobile-sort ${isMobileSortOpened ? 'active' : ''}`}
+      >
         <span>{sort}</span>
         <img src="/images/catologue-chevron-up.svg" alt="" />
         <div className="catalogue__dropdown">
           <div className="min-height-0">
             {sortItems.map(el => (
-              <span onClick={() => setSort(el)}>
+              <span key={el} onClick={() => setSort(el)}>
                 {el}
               </span>
             ))}

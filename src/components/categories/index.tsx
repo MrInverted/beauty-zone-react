@@ -1,5 +1,4 @@
 import React from 'react'
-
 import "./categories.scss"
 import 'swiper/css';
 import "swiper/css/grid"
@@ -18,6 +17,7 @@ import { allServices } from '../../utils/location';
  * patch /api/categories/:id
  * 
  */
+
 
 
 export default function () {
@@ -53,12 +53,12 @@ export default function () {
 
               <div className="swiper-button-prev swiper-button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                  <path d="M8.5 1L1 8.5L8.5 16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M8.5 1L1 8.5L8.5 16" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
               <div className="swiper-button-next swiper-button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                  <path d="M1 1L8.5 8.5L1 16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M1 1L8.5 8.5L1 16" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
             </Swiper>

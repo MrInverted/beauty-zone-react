@@ -5,7 +5,6 @@ import { CatalogueSorting } from './CatalogueSorting';
 import { CatalogueMastersGrid } from './CatalogueMastersGrid';
 import { CatalogueMobileNav } from './CatalogueMobileNav';
 
-
 export default function () {
   const [isMobileFiltersOpened, setIsMobileFiltersOpened] = React.useState(false);
 

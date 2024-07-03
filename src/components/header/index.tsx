@@ -1,6 +1,8 @@
 import React from 'react'
 import "./header.scss";
 
+
+
 export default function () {
   const [isOpened, setIsOpened] = React.useState(false);
 

@@ -1,7 +1,5 @@
 import React from 'react'
 
-
-
 interface IInput {
   type: "input";
   placeholder: string;
@@ -27,12 +25,13 @@ type props = {
 
 function CatalogueSortingItem(props: props) {
   const [isOpened, setIsOpened] = React.useState(true);
+  const [price, setPrice] = React.useState({ min: 0, max: 0 })
 
   const onLabelClick: React.MouseEventHandler<HTMLDivElement> = () => {
     setIsOpened(!isOpened)
   }
 
-  const onCheckBoxClick = (service: string) => {
+  const onCheckboxClick = (service: string) => {
     if (props.type !== "chexboxes") return;
 
     props.setValue(props.chexboxes.map(el => {
@@ -67,7 +66,7 @@ function CatalogueSortingItem(props: props) {
                   name={el.service}
                   value={el.service}
                   checked={el.checked}
-                  onChange={onCheckBoxClick.bind(null, el.service)}
+                  onChange={onCheckboxClick.bind(null, el.service)}
                 />
                 <span>{el.service}</span>
               </label>
@@ -76,23 +75,33 @@ function CatalogueSortingItem(props: props) {
 
           {props.type === "radio" && <>
             <label>
-              <input type="radio" name="price" value="" />
+              <input type="radio" name="price" onChange={() => setPrice({ min: 0, max: 25 })} />
               <span>Ниже $25</span>
             </label>
             <label>
-              <input type="radio" name="price" value="" />
+              <input type="radio" name="price" onChange={() => setPrice({ min: 25, max: 50 })} />
               <span>$25 - $50</span>
             </label>
             <label>
-              <input type="radio" name="price" value="" />
+              <input type="radio" name="price" onChange={() => setPrice({ min: 50, max: 100 })} />
               <span>$50 - $100</span>
             </label>
             <label>
-              <input type="radio" name="price" value="" />
+              <input type="radio" name="price" />
               <span>
-                <input type="text" value="" placeholder="$ Min" />
+                <input
+                  type="text"
+                  placeholder="$ Min"
+                  value={price.min.toString()}
+                  onChange={(e) => setPrice({ ...price, min: parseInt(e.target.value) || 0 })}
+                />
                 –
-                <input type="text" value="" placeholder="$ Max" />
+                <input
+                  type="text"
+                  placeholder="$ Max"
+                  value={price.max.toString()}
+                  onChange={(e) => setPrice({ ...price, max: parseInt(e.target.value) || 0 })}
+                />
               </span>
             </label>
           </>}

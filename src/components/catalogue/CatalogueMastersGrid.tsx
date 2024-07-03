@@ -1,13 +1,14 @@
 import React from 'react';
 
-import { masterCardPreviewBoth } from '../../utils/mastersCard';
+import { masterCardPreviewBoth } from '../../utils/catalogue';
 import { MastersCardPreview } from '../masters/MastersCardPreview';
-
 
 interface ICatalogueMastersGrid {
   sort: string;
   setSort: React.Dispatch<React.SetStateAction<string>>;
 }
+
+
 
 function CatalogueMastersGrid({ sort, setSort }: ICatalogueMastersGrid) {
   const [isDecktopSortOpen, setIsDecktopSortOpen] = React.useState(false);
@@ -28,7 +29,7 @@ function CatalogueMastersGrid({ sort, setSort }: ICatalogueMastersGrid) {
           <div className="catalogue__dropdown">
             <div className="min-height-0">
               {sortItems.map(el => (
-                <span onClick={() => setSort(el)}>
+                <span key={el} onClick={() => setSort(el)}>
                   {el}
                 </span>
               ))}
@@ -49,7 +50,7 @@ function CatalogueMastersGrid({ sort, setSort }: ICatalogueMastersGrid) {
           <a href="./catalogue.html">5</a>
           <a href="./catalogue.html" className="catalogue__pagination-next catalogue__pagination-circle">
             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-              <path d="M1 1L8.5 8.5L1 16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M1 1L8.5 8.5L1 16" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
         </div>

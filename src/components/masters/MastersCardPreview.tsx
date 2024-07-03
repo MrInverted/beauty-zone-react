@@ -1,5 +1,8 @@
 import React from 'react'
-import { MasterCardPreviewType } from '../../utils/mastersCard'
+
+import { MasterCardPreviewType } from '../../utils/catalogue'
+
+
 
 function MastersCardPreview(props: MasterCardPreviewType) {
   return (

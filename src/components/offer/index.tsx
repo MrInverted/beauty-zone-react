@@ -1,6 +1,8 @@
 import React from 'react'
 import "./offer.scss"
 
+
+
 export default function index() {
   return (
     <section className="offer">
