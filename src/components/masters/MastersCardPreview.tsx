@@ -1,12 +1,13 @@
 import React from 'react'
 
 import { MasterCardPreviewType } from '../../utils/catalogue'
+type Props = MasterCardPreviewType & { onClick: () => void }
 
 
 
-function MastersCardPreview(props: MasterCardPreviewType) {
+function MastersCardPreview(props: Props) {
   return (
-    <article className={`masters__item ${props.isPremium ? 'masters__premium' : ''}`}>
+    <article className={props.isPremium ? 'masters__item masters__premium' : 'masters__item'} onClick={props.onClick}>
       <div className="masters__category">
         {props.service}
       </div>

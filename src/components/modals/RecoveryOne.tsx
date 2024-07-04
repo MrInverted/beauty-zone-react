@@ -2,7 +2,7 @@ import React from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../redux/store';
-import { closeRecoveryModal, showLoginModal } from '../../redux/modals-slice';
+import { closeLoginRegisterRecoveryModals, showLoginModal } from '../../redux/modals-slice';
 
 interface IForm {
   email: string;
@@ -29,7 +29,7 @@ function RecoveryOne({ setStep }: IRecovery) {
   }
 
   const onLoginClick = () => {
-    dispatch(closeRecoveryModal())
+    dispatch(closeLoginRegisterRecoveryModals())
     dispatch(showLoginModal())
   }
 

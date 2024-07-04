@@ -2,7 +2,7 @@ import React from 'react'
 
 import Modal from "../modal";
 
-import { closeRegisterModal } from '../../redux/modals-slice';
+import { closeLoginRegisterRecoveryModals } from '../../redux/modals-slice';
 import { useAppDispatch } from '../../redux/store';
 import { RegisterOne } from './RegisterOne';
 import { RegisterTwo } from './RegisterTwo';
@@ -15,7 +15,7 @@ function Register() {
   const dispatch = useAppDispatch();
 
   const closeModal = () => {
-    dispatch(closeRegisterModal())
+    dispatch(closeLoginRegisterRecoveryModals())
   }
 
   return (

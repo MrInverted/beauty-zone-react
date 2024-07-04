@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useAppDispatch } from '../../redux/store';
-import { closeRecoveryModal, showLoginModal } from '../../redux/modals-slice';
+import { showLoginModal } from '../../redux/modals-slice';
 
 
 

@@ -5,7 +5,7 @@ import Modal from "../modal";
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { InputPassword } from '../modal/InputPassword';
 
-import { closeLoginModal, showRecoveryModal, showRegisterModal } from '../../redux/modals-slice';
+import { closeLoginRegisterRecoveryModals, showRecoveryModal, showRegisterModal } from '../../redux/modals-slice';
 import { useAppDispatch } from '../../redux/store';
 
 interface IForm {
@@ -29,21 +29,21 @@ function Login() {
   }
 
   const onCloseModal = () => {
-    dispatch(closeLoginModal())
+    dispatch(closeLoginRegisterRecoveryModals())
   }
 
   const onCreateAccountClick = () => {
-    dispatch(closeLoginModal())
+    dispatch(closeLoginRegisterRecoveryModals())
     dispatch(showRegisterModal())
   }
 
   const onRecoveryPasswordClick = () => {
-    dispatch(closeLoginModal())
+    dispatch(closeLoginRegisterRecoveryModals())
     dispatch(showRecoveryModal())
   }
 
   const onSignInClick = () => {
-    dispatch(closeLoginModal())
+    dispatch(closeLoginRegisterRecoveryModals())
   }
 
   const isError = formState.errors.email?.message

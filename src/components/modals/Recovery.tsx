@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { closeRecoveryModal } from '../../redux/modals-slice';
+import { closeLoginRegisterRecoveryModals } from '../../redux/modals-slice';
 import { useAppDispatch } from '../../redux/store';
 
 import Modal from "../modal";
@@ -16,7 +16,7 @@ function Recovery() {
   const dispatch = useAppDispatch();
 
   const closeModal = () => {
-    dispatch(closeRecoveryModal())
+    dispatch(closeLoginRegisterRecoveryModals())
   }
 
   return (

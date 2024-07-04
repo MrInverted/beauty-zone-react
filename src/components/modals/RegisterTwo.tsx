@@ -2,7 +2,7 @@ import React from 'react'
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../redux/store';
-import { closeRegisterModal, showLoginModal } from '../../redux/modals-slice';
+import { closeLoginRegisterRecoveryModals, showLoginModal } from '../../redux/modals-slice';
 
 interface IForm {
   state: string;
@@ -31,7 +31,7 @@ function RegisterTwo({ setStep }: IRegister) {
   }
 
   const onLoginClick = () => {
-    dispatch(closeRegisterModal())
+    dispatch(closeLoginRegisterRecoveryModals())
     dispatch(showLoginModal())
   }
 

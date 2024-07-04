@@ -3,7 +3,7 @@ import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { InputPassword } from '../modal/InputPassword';
 import { useAppDispatch } from '../../redux/store';
-import { closeRegisterModal, showLoginModal } from '../../redux/modals-slice';
+import { closeLoginRegisterRecoveryModals, showLoginModal } from '../../redux/modals-slice';
 
 
 interface IForm {
@@ -32,7 +32,7 @@ function RegisterOne({ setStep }: IRegister) {
   }
 
   const onLoginClick = () => {
-    dispatch(closeRegisterModal())
+    dispatch(closeLoginRegisterRecoveryModals())
     dispatch(showLoginModal())
   }
 

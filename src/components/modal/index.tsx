@@ -2,9 +2,9 @@ import React from 'react'
 import "./modal.scss";
 
 interface IModal {
-  title: string;
+  title?: string;
   closeModal: () => void;
-  children?: React.ReactNode
+  children: React.ReactNode
 }
 
 
@@ -20,7 +20,7 @@ function index({ title, closeModal, children }: IModal) {
     <div className="modal" onClick={onCloseModal}>
       <div className="container">
         <div className="modal__content">
-          <h3>{title}</h3>
+          {title && <h3>{title}</h3>}
 
           {children}
 

@@ -22,6 +22,11 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+      try { Fancybox.bind("[data-fancybox]", {}) } catch (e) { console.warn("fancybox catch: ", e) }
+    </script>
   </body>
 
 </html>

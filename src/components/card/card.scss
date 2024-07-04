@@ -1,6 +1,4 @@
 .card {
-  display: none;
-
   position: fixed;
   top: 0;
   right: 0;
@@ -9,6 +7,7 @@
   height: 100%;
   background-color: rgba(105, 117, 134, 0.50);
   overflow-y: scroll;
+  padding: 0 20px;
 
   &__content {
     position: relative;
@@ -93,24 +92,6 @@
     &:hover {
       opacity: 0.6;
     }
-
-    .show {
-      display: block;
-    }
-
-    .tel {
-      display: none;
-    }
-
-    &.active {
-      .tel {
-        display: block;
-      }
-
-      .show {
-        display: none;
-      }
-    }
   }
 
   &__labels {
@@ -162,15 +143,22 @@
     position: relative;
   }
 
-  &__slide {
-    img {
-      width: 100%;
-    }
+  &__slide img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center;
+  }
+
+
+  .swiper {
+    position: static;
   }
 
   .swiper-button {
     position: absolute;
     top: 50%;
+    z-index: 3;
     transform: translateY(-50%);
 
     width: 40px;
@@ -209,17 +197,6 @@
 
     svg {
       margin-left: 2px;
-    }
-  }
-
-  &__close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.6;
     }
   }
 }
@@ -336,47 +313,8 @@
 
 
 .request {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 15;
-  background: rgba(105, 117, 134, 0.20);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  display: none;
 
   &__content {
-    position: relative;
-    max-width: 600px;
-    padding: 40px 100px;
-    margin: 0 auto;
-    border-radius: 6px;
-    background: #FFF;
-
-    @media (max-width: 700px) {
-      padding: 40px 60px;
-    }
-
-    @media (max-width: 600px) {
-      padding: 40px 40px;
-    }
-
-    @media (max-width: 500px) {
-      padding: 40px 20px;
-    }
-
-    h3 {
-      font-size: 26px;
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 30px;
-    }
 
     input,
     textarea {
@@ -422,59 +360,14 @@
     }
   }
 
-  &__close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.6;
-    }
-  }
 }
 
 
 // ------------
 
 .make-review {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 15;
-  background: rgba(105, 117, 134, 0.20);
-  overflow-y: scroll;
-
-  display: none;
 
   &__content {
-    position: relative;
-    max-width: 600px;
-    padding: 40px 100px;
-    margin: 40px auto;
-    border-radius: 6px;
-    background: #FFF;
-
-    @media (max-width: 700px) {
-      padding: 40px 60px;
-    }
-
-    @media (max-width: 600px) {
-      padding: 40px 40px;
-    }
-
-    @media (max-width: 500px) {
-      padding: 40px 20px;
-    }
-
-    h3 {
-      font-size: 26px;
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 30px;
-    }
 
     input,
     textarea {
@@ -559,14 +452,4 @@
     }
   }
 
-  &__close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.6;
-    }
-  }
 }
