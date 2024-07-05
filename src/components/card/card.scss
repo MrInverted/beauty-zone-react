@@ -437,6 +437,7 @@
     height: 140px;
     border-radius: 6px;
     background: #DFE1E3;
+    overflow: hidden;
     cursor: pointer;
 
     color: #697586;
@@ -446,6 +447,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
 
     &:hover {
       opacity: 0.6;

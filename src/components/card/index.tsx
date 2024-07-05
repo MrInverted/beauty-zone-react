@@ -1,11 +1,14 @@
-import React from 'react'
-import "./card.scss"
+import React from 'react';
+import "./card.scss";
 
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { closeCardModal } from '../../redux/card-slice';
+
 import { CardMain } from './CardMain';
 import { CardRequest } from './CardRequest';
 import { CardMakeReview } from './CardMakeReview';
+
+
 
 export default function () {
   const dispatch = useAppDispatch();
@@ -13,7 +16,7 @@ export default function () {
 
   const onCloseCard: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (e.target !== e.currentTarget) return;
-    dispatch(closeCardModal())
+    dispatch(closeCardModal());
   }
 
   return (<>

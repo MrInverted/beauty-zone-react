@@ -6,7 +6,7 @@ import "swiper/css/grid"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Grid, Navigation } from 'swiper/modules';
 import { CategoriesCard } from './CategoriesCard';
-import { allServices } from '../../utils/location';
+import { allServices } from '../../utils/catalogue';
 
 
 /**

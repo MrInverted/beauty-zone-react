@@ -1,15 +1,17 @@
-import React from 'react'
+import React from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-import Modal from "../modal"
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { useAppDispatch } from '../../redux/store';
 import { closeCardRequest } from '../../redux/card-slice';
+
+import Modal from "../modal"
 
 interface IForm {
   name: string;
   tel: string;
   text: string;
 }
+
 
 
 function CardRequest() {

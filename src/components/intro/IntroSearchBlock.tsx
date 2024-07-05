@@ -2,7 +2,7 @@ import React from 'react'
 
 interface IIntroSearchBlock {
   title: string;
-  list: any[];
+  list: readonly { russian: string }[];
   setTitle: React.Dispatch<React.SetStateAction<any>>
   span2?: boolean;
 }
@@ -21,7 +21,7 @@ function IntroSearchBlock({ title, setTitle, list, span2 }: IIntroSearchBlock) {
           {list.map((el, index) => (
             <span
               key={index}
-              onClick={() => setTitle(el)}
+              onClick={() => setTitle(el.russian)}
             >
               {el.russian}
             </span>

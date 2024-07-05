@@ -31,10 +31,7 @@ function RegisterOne({ setStep }: IRegister) {
     reset()
   }
 
-  const onLoginClick = () => {
-    dispatch(closeLoginRegisterRecoveryModals())
-    dispatch(showLoginModal())
-  }
+  const onLoginClick = () => dispatch(showLoginModal());
 
   const isError = formState.errors.name?.message
     || formState.errors.surname?.message

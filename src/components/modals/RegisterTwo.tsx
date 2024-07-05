@@ -30,10 +30,7 @@ function RegisterTwo({ setStep }: IRegister) {
     reset()
   }
 
-  const onLoginClick = () => {
-    dispatch(closeLoginRegisterRecoveryModals())
-    dispatch(showLoginModal())
-  }
+  const onLoginClick = () => dispatch(showLoginModal());
 
   const isError = formState.errors.state?.message
     || formState.errors.city?.message

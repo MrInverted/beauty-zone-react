@@ -1,12 +1,13 @@
 import React from 'react'
 import "./header.scss";
+import { Link, NavLink } from 'react-router-dom';
 
 
 
 export default function () {
   const [isOpened, setIsOpened] = React.useState(false);
 
-  const onClickBurger: React.MouseEventHandler<HTMLDivElement> = () => {
+  const onClickBurger = () => {
     if (isOpened) {
       document.body.classList.remove("header-opened");
     } else {
@@ -22,19 +23,19 @@ export default function () {
         <div className="header__content">
           <div className="header__row">
             <div className="header__logo">
-              <a href="/">
+              <Link to="/">
                 <img src="/images/header-logo.svg" alt="" />
-              </a>
+              </Link>
             </div>
 
             <nav className="header__chooser">
-              <a href="/" className="active">Я ищу мастера</a>
-              <a href="/master" className="">Я - мастер</a>
+              <NavLink to="/" >Я ищу мастера</NavLink>
+              <NavLink to="/master" >Я - мастер</NavLink>
             </nav>
 
             <div className="header__login">
-              <a href="#" className="login-trigger btn-dark">Добавить объявление</a>
-              <a href="#" className="login-trigger">
+              <a href="#" className="btn-dark">Добавить объявление</a>
+              <a href="#">
                 <img src="/images/header-account.svg" alt="" />
                 <span>Личный кабинет</span>
               </a>
@@ -50,14 +51,14 @@ export default function () {
             <div className="min-height-0">
               <div className="mobile-content">
                 <nav className="header__chooser">
-                  <a href="/" className="active">Я ищу мастера</a>
-                  <a href="/catalogue">Каталог мастеров</a>
-                  <a href="/master" className="">Я - мастер</a>
+                  <NavLink to="/">Я ищу мастера</NavLink>
+                  <NavLink to="/catalogue">Каталог мастеров</NavLink>
+                  <NavLink to="/master" className="">Я - мастер</NavLink>
                 </nav>
 
                 <div className="header__login">
-                  <a href="#" className="login-trigger btn-dark">Добавить объявление</a>
-                  <a href="#" className="login-trigger">
+                  <a href="#" className="btn-dark">Добавить объявление</a>
+                  <a href="#">
                     <img src="/images/header-account.svg" alt="" />
                     <span>Личный кабинет</span>
                   </a>

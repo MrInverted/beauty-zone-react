@@ -1,9 +1,10 @@
-import React, { useRef } from 'react'
+import React from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-import Modal from "../modal"
-import { useAppDispatch } from '../../redux/store'
-import { closeCardMakeReview } from '../../redux/card-slice'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useAppDispatch } from '../../redux/store';
+import { closeCardMakeReview } from '../../redux/card-slice';
+
+import Modal from "../modal";
 
 const defaultStars = new Array(5).fill("")
 
@@ -11,14 +12,17 @@ interface IForm {
   name: string;
   email: string;
   text: string;
+  file?: File;
 }
+
 
 
 function CardMakeReview() {
   const dispatch = useAppDispatch()
-  const fileRef = useRef<HTMLInputElement>(null)
+  const [fileUrl, setFileUrl] = React.useState("")
+  const fileRef = React.useRef<HTMLInputElement>(null)
   const [stars, setStars] = React.useState({ selected: 0, hovered: 0 })
-  const { handleSubmit, register, reset, formState } = useForm<IForm>({ mode: "onChange", reValidateMode: "onChange" })
+  const { handleSubmit, register, reset, formState, setValue, setError, clearErrors, trigger } = useForm<IForm>({ mode: "all" })
 
   const onCloseMakeReviews = () => dispatch(closeCardMakeReview())
   const onAddPhotoClick = () => fileRef.current?.click()
@@ -29,15 +33,46 @@ function CardMakeReview() {
     (stars.hovered >= index + 2) ? 'hovered' : '';
 
   const onFormSubmit: SubmitHandler<IForm> = (data) => {
-    console.log(data, { stars: stars.selected }, fileRef.current?.files?.item(0))
+    const rating = stars.selected;
 
-    reset()
+    console.log({ ...data, rating });
+
+    reset();
+    setStars({ selected: 0, hovered: 0 });
+    setFileUrl("");
+  }
+
+  const onInputFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const file = e.target.files?.item(0)
+
+    if (!file) return;
+
+    const isJpg = file.type === "image/jpeg" || file.type === "image/jpg";
+    const isPng = file.type === "image/png";
+    const isImage = isJpg || isPng;
+
+    if (isImage === false) {
+      setError('file', { message: "Возможны только форматы jpg, jpeg, png" });
+      setFileUrl("");
+      return;
+    }
+
+    clearErrors("file");
+    setValue('file', file);
+    trigger("file");
+
+    const src = URL.createObjectURL(file);
+
+    setFileUrl(src);
   }
 
   const isError = formState.errors.name?.message
     || formState.errors.email?.message
     || formState.errors.text?.message
+    || formState.errors.file?.message
     || formState.errors.root?.message;
+
+  const { isValid } = formState;
 
   return (
     <Modal title='Оставить отзыв' closeModal={onCloseMakeReviews}>
@@ -47,7 +82,6 @@ function CardMakeReview() {
           <div className="modal__error">
             <img src="/images/modal-error.svg" alt="" />
             <span>{isError}</span>
-            {/* <span>Неверный адрес электронной почты или пароль</span> */}
           </div>
         </>}
 
@@ -76,32 +110,32 @@ function CardMakeReview() {
         </div>
 
         <form onSubmit={handleSubmit(onFormSubmit)}>
-          <input type="text" placeholder="Имя"  {...register("name", {
+          <input type="text" placeholder="Имя" autoComplete='off'  {...register("name", {
             required: { value: true, message: "Имя обязательно к заполнению" },
-            minLength: { value: 3, message: "Имя слишком короткое" }
+            minLength: { value: 3, message: "Имя минимум 3 символа" }
           })} />
 
-          <input type="text" placeholder="E-mail" {...register("email", {
+          <input type="text" placeholder="E-mail" autoComplete='off' {...register("email", {
             required: { value: true, message: "E-mail обязателен к заполнению" },
-            minLength: { value: 10, message: "E-mail слишком короткий" },
+            minLength: { value: 10, message: "E-mail минимум 10 символов" },
             pattern: { value: /\S{3,}@\w{2,}\.\w{2,}/gi, message: "E-mail неверного формата" }
           })} />
 
-          <input type="file" style={{ display: "none" }} ref={fileRef} />
+          <input type="file" style={{ display: "none" }} ref={fileRef} onChange={onInputFileChange} />
 
-          <textarea placeholder="Напишите про свои впечатления" {...register("text", {
+          <textarea placeholder="Напишите про свои впечатления" autoComplete='off' {...register("text", {
             required: { value: true, message: "Текст обязателен к заполнению" },
-            minLength: { value: 10, message: "Текст слишком короткий" }
+            minLength: { value: 10, message: "Текст минимум 10 символов" }
           })} />
 
           <div className="make-review__add-photo" onClick={onAddPhotoClick}>
-            <span>+ Добавить</span>
+            {fileUrl ? <img src={fileUrl} alt='' /> : <span>+ Добавить</span>}
           </div>
 
           <button
             type="submit"
             className="btn-dark"
-            disabled={!formState.isValid}
+            disabled={!isValid}
           >
             Отправить
           </button>

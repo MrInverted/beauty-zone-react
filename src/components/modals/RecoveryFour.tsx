@@ -8,9 +8,7 @@ import { showLoginModal } from '../../redux/modals-slice';
 function RecoveryFour() {
   const dispatch = useAppDispatch();
 
-  const onSignInClick = () => {
-    dispatch(showLoginModal())
-  }
+  const onSignInClick = () => dispatch(showLoginModal());
 
   return (<>
     <div className="modal__success">

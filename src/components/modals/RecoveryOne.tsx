@@ -28,10 +28,7 @@ function RecoveryOne({ setStep }: IRecovery) {
     reset();
   }
 
-  const onLoginClick = () => {
-    dispatch(closeLoginRegisterRecoveryModals())
-    dispatch(showLoginModal())
-  }
+  const onLoginClick = () => dispatch(showLoginModal())
 
   const isError = formState.errors.email?.message
     || formState.errors.password?.message

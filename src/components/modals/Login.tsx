@@ -26,25 +26,13 @@ function Login() {
     console.log(data)
 
     reset()
-  }
 
-  const onCloseModal = () => {
     dispatch(closeLoginRegisterRecoveryModals())
   }
 
-  const onCreateAccountClick = () => {
-    dispatch(closeLoginRegisterRecoveryModals())
-    dispatch(showRegisterModal())
-  }
-
-  const onRecoveryPasswordClick = () => {
-    dispatch(closeLoginRegisterRecoveryModals())
-    dispatch(showRecoveryModal())
-  }
-
-  const onSignInClick = () => {
-    dispatch(closeLoginRegisterRecoveryModals())
-  }
+  const onCloseModal = () => dispatch(closeLoginRegisterRecoveryModals());
+  const onCreateAccountClick = () => dispatch(showRegisterModal());
+  const onRecoveryPasswordClick = () => dispatch(showRecoveryModal());
 
   const isError = formState.errors.email?.message
     || formState.errors.password?.message
@@ -79,7 +67,6 @@ function Login() {
           type="submit"
           className="btn-dark"
           disabled={Boolean(isError)}
-          onClick={onSignInClick}
         >
           Войти
         </button>

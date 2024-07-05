@@ -12,12 +12,10 @@ import { RecoveryFour } from './RecoveryFour';
 
 
 function Recovery() {
-  const [step, setStep] = React.useState(1)
+  const [step, setStep] = React.useState(1);
   const dispatch = useAppDispatch();
 
-  const closeModal = () => {
-    dispatch(closeLoginRegisterRecoveryModals())
-  }
+  const closeModal = () => dispatch(closeLoginRegisterRecoveryModals());
 
   return (
     <Modal title='Восстановление пароля' closeModal={closeModal}>

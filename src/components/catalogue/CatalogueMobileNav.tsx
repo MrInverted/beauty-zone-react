@@ -12,9 +12,7 @@ function CatalogueMobileNav({ sort, setSort, onShowFiltersClick }: ICatalogueMob
   const [isMobileSortOpened, setIsMobileSortOpened] = React.useState(false);
   const sortItems = ["По популярности", "По рейтингу", "По цене"];
 
-  const onSortCardsClick = () => {
-    setIsMobileSortOpened(!isMobileSortOpened);
-  }
+  const onSortCardsClick = () => setIsMobileSortOpened(!isMobileSortOpened);
 
   return (
     <div className="catalogue__mobile-nav">

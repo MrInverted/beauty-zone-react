@@ -1,9 +1,10 @@
 import React from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { showCardRequest } from '../../redux/card-slice';
+
 import { Portfolio } from './Portfolio';
 import { CardReviews } from './CardReviews';
-import { showCardRequest } from '../../redux/card-slice';
 
 
 
@@ -13,7 +14,7 @@ function CardMain() {
 
   const [isPhoneShowed, setIsPhoneShowed] = React.useState(false);
 
-  const onLeaveARequestClick = () => dispatch(showCardRequest())
+  const onLeaveARequestClick = () => dispatch(showCardRequest());
 
   return (<>
     <div className="card__row">

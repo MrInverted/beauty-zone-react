@@ -1,16 +1,19 @@
 import React from 'react'
+import { IntroSearchBlock } from '../intro/IntroSearchBlock';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { AllServiceType } from '../../utils/catalogue';
+import { deleteSortingService, setSortingPrice, setSortingService } from '../../redux/sorting-slice';
 
 interface IInput {
   type: "input";
-  placeholder: string;
   value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
+  list: readonly { russian: string }[];
 }
 
 interface IChexboxes {
   type: "chexboxes";
-  chexboxes: { service: string, value: string, checked: boolean }[];
-  setValue: React.Dispatch<React.SetStateAction<any>>;
+  chexboxes: readonly { russian: string, value: string, checked: boolean }[];
 }
 
 interface IRadio {
@@ -24,21 +27,18 @@ type props = {
 
 
 function CatalogueSortingItem(props: props) {
+  const dispatch = useAppDispatch()
+  const { service, price } = useAppSelector(store => store.sorting)
   const [isOpened, setIsOpened] = React.useState(true);
-  const [price, setPrice] = React.useState({ min: 0, max: 0 })
 
-  const onLabelClick: React.MouseEventHandler<HTMLDivElement> = () => {
-    setIsOpened(!isOpened)
-  }
+  const setPrice = (inc: { min: number, max: number }) => dispatch(setSortingPrice(inc));
 
-  const onCheckboxClick = (service: string) => {
-    if (props.type !== "chexboxes") return;
+  const onLabelClick = () => setIsOpened(!isOpened);
 
-    props.setValue(props.chexboxes.map(el => {
-      if (el.service === service) el.checked = !el.checked;
-      return el;
-    }))
-  }
+  const isCheckboxChecked = (inc: AllServiceType) => Boolean(service.find(item => item === inc));
+  const onCheckboxClickAdd = (service: string) => dispatch(setSortingService(service));
+  const onCheckboxClickDelete = (service: string) => dispatch(deleteSortingService(service));
+  const isAddOrDelete = (condition: boolean, service: string) => condition ? onCheckboxClickDelete.bind(null, service) : onCheckboxClickAdd.bind(null, service)
 
   return (
     <div className="catalogue__sorting-item">
@@ -50,27 +50,24 @@ function CatalogueSortingItem(props: props) {
         <div className="min-height-0">
 
           {props.type === "input" && <>
-            <input
-              type="text"
-              placeholder={props.placeholder}
-              value={props.value}
-              onChange={(e) => props.setValue(e.target.value)}
-            />
+            <IntroSearchBlock title={props.value} setTitle={props.setValue} list={props.list} />
           </>}
 
           {props.type === "chexboxes" && props.chexboxes &&
-            props.chexboxes.map((el) => (
-              <label key={el.service}>
+            props.chexboxes.map((el) => {
+              const isChecked = isCheckboxChecked(el.russian as AllServiceType)
+
+              return <label key={el.russian}>
                 <input
                   type="checkbox"
-                  name={el.service}
-                  value={el.service}
-                  checked={el.checked}
-                  onChange={onCheckboxClick.bind(null, el.service)}
+                  name={el.russian}
+                  value={el.russian}
+                  checked={isChecked}
+                  onChange={isAddOrDelete(isChecked, el.russian)}
                 />
-                <span>{el.service}</span>
+                <span>{el.russian}</span>
               </label>
-            ))
+            })
           }
 
           {props.type === "radio" && <>

@@ -9,12 +9,8 @@ import { showLoginModal, showRegisterModal } from '../../redux/modals-slice'
 export default function () {
   const dispatch = useAppDispatch()
 
-  const onLoginClick = () => {
-    dispatch(showLoginModal())
-  }
-  const onRegisterClick = () => {
-    dispatch(showRegisterModal())
-  }
+  const onLoginClick = () => dispatch(showLoginModal());
+  const onRegisterClick = () => dispatch(showRegisterModal());
 
   return (
     <footer className="footer">
