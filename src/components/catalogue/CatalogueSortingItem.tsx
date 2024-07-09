@@ -1,14 +1,13 @@
 import React from 'react'
-import { IntroSearchBlock } from '../intro/IntroSearchBlock';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { AllServiceType } from '../../utils/catalogue';
+import { AllServiceType } from '../../data/catalogue';
 import { deleteSortingService, setSortingPrice, setSortingService } from '../../redux/sorting-slice';
+import { IntroSearchState } from '../intro/IntroSearchState';
+import { IntroSearchCity } from '../intro/IntroSeacrhCity';
 
 interface IInput {
   type: "input";
-  value: string;
-  setValue: React.Dispatch<React.SetStateAction<any>>;
-  list: readonly { russian: string }[];
+  stateOrCity: "state" | "city"
 }
 
 interface IChexboxes {
@@ -49,9 +48,7 @@ function CatalogueSortingItem(props: props) {
       <div className={`catalogue__sorting-input ${isOpened ? "" : "closed"}`}>
         <div className="min-height-0">
 
-          {props.type === "input" && <>
-            <IntroSearchBlock title={props.value} setTitle={props.setValue} list={props.list} />
-          </>}
+          {(props.type === "input") && (props.stateOrCity === "state" ? <IntroSearchState /> : <IntroSearchCity />)}
 
           {props.type === "chexboxes" && props.chexboxes &&
             props.chexboxes.map((el) => {

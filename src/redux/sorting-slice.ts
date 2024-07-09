@@ -1,19 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AllServiceType } from './../utils/catalogue';
-import { AllCitiesType, AllStatesType } from "../utils/location";
+import { AllServiceType } from '../data/catalogue';
+import { AllCitiesType, AllStatesType } from "../data/location";
 
 interface ISortingState {
   state: AllStatesType | "Выберите штат";
   city: AllCitiesType | "Выберите город";
   service: AllServiceType[] | [];
   price: { min: number, max: number };
+  sort: "По популярности" | "По рейтингу" | "По цене"
 }
 
 const initialState: ISortingState = {
   state: "Выберите штат",
   city: "Выберите город",
   service: [],
-  price: { min: 0, max: 0 }
+  price: { min: 0, max: 0 },
+  sort: "По популярности",
 }
 
 const sortingSlice = createSlice({
@@ -46,6 +48,10 @@ const sortingSlice = createSlice({
     setSortingPrice(state, action) {
       state.price = action.payload;
     },
+
+    setSortingBy(state, action) {
+      state.sort = action.payload;
+    }
   }
 })
 
@@ -57,5 +63,6 @@ export const {
   setSortingServiceSingle,
   setSortingService,
   deleteSortingService,
-  setSortingPrice
+  setSortingPrice,
+  setSortingBy
 } = sortingSlice.actions;

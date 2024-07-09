@@ -2,19 +2,22 @@ import React from 'react'
 
 interface IInputPassword {
   register: any;
+  placeholder: string;
+  span2?: boolean;
+  readOnly: boolean;
 }
 
 
 
-function InputPassword({ register }: IInputPassword) {
+function InputPassword({ register, placeholder, span2, readOnly }: IInputPassword) {
   const [isPassword, setIsPassword] = React.useState(true)
 
   return (
-    <label>
+    <label className={span2 ? "article-password span-2" : "article-password"}>
       <input
-        className="modal__password"
         type={isPassword ? 'password' : 'text'}
-        placeholder="Пароль"
+        placeholder={placeholder}
+        readOnly={readOnly}
         {...register}
       />
 

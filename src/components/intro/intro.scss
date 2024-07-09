@@ -216,23 +216,23 @@
 }
 
 .bg-flowers {
-  background-image: url("/images/bg-flowers.jpg");
+  background-image: url("../../assets/images/bg-flowers.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 
   @media (max-width: 600px) {
-    background-image: url("/images/bg-flowers-small.jpg");
+    background-image: url("../../assets/images/bg-flowers-small.jpg");
   }
 }
 
 .bg-candles {
-  background-image: url("/images/bg-candles.jpg");
+  background-image: url("../../assets/images/bg-candles.jpg");
   background-repeat: no-repeat;
   background-position: center 75%;
   background-size: cover;
 
   @media (max-width: 600px) {
-    background-image: url("/images/bg-candles-small.jpg");
+    background-image: url("../../assets/images/bg-candles-small.jpg");
   }
 }

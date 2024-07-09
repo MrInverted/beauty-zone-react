@@ -92,13 +92,13 @@
     border-radius: 16px;
     position: relative;
 
-    background-image: url("/images/bg-about.jpg");
+    background-image: url("../../assets/images/bg-about.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
 
     @media (max-width: 600px) {
-      background-image: url("/images/bg-about-small.jpg");
+      background-image: url("../../assets/images/bg-about-small.jpg");
       height: 160px;
       margin-top: 140px;
     }

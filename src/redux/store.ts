@@ -3,12 +3,14 @@ import { modalsSlice } from "./modals-slice";
 import { cardSlice } from "./card-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { sortingSlice } from "./sorting-slice";
+import { addArticleSlice } from "./add-article-slice";
 
 const store = configureStore({
   reducer: {
     modals: modalsSlice.reducer,
     card: cardSlice.reducer,
-    sorting: sortingSlice.reducer
+    sorting: sortingSlice.reducer,
+    addArticle: addArticleSlice.reducer
   }
 })
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { MasterCardPreviewType } from '../../utils/catalogue'
+import { MasterCardPreviewType } from '../../data/catalogue'
 type Props = MasterCardPreviewType & { onClick: () => void }
 
 

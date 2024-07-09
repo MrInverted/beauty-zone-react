@@ -10,8 +10,6 @@ import { CatalogueMobileNav } from './CatalogueMobileNav';
 export default function () {
   const [isMobileFiltersOpened, setIsMobileFiltersOpened] = React.useState(false);
 
-  const [sort, setSort] = React.useState("По популярности");
-
   const onShowFiltersClick = () => {
     setIsMobileFiltersOpened(true);
     document.body.style.overflow = "hidden";
@@ -27,11 +25,11 @@ export default function () {
       <div className="container">
         <div className="catalogue__content">
           <h2>Каталог мастеров</h2>
-          <CatalogueMobileNav {...{ sort, setSort, onShowFiltersClick }} />
+          <CatalogueMobileNav {...{ onShowFiltersClick }} />
 
           <div className="catalogue__grid">
             <CatalogueSorting {...{ isMobileFiltersOpened, onCloseFiltersClick }} />
-            <CatalogueMastersGrid {...{ sort, setSort }} />
+            <CatalogueMastersGrid />
           </div>
         </div>
       </div>

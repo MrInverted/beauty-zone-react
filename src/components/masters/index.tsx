@@ -4,7 +4,7 @@ import "./masters.scss"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 
-import { masterCardPreviewBoth } from '../../utils/catalogue'
+import { masterCardPreviewBoth } from '../../data/catalogue'
 import { MastersCardPreview } from './MastersCardPreview'
 import { useAppDispatch } from '../../redux/store';
 import { showCardModal } from '../../redux/card-slice';

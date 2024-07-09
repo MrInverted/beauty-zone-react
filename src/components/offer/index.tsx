@@ -17,7 +17,7 @@ export default function index({ page }: IOffer) {
 
           <p>Выбери тариф и получи первый месяц размещения <span>Бесплатно!</span></p>
           <div className="offer__row">
-            <span className="btn-dark">Добавить объявление</span>
+            <Link to="/account" className="btn-dark">Добавить объявление</Link>
             {page === "index" && <Link to="/master">Подробнее</Link>}
           </div>
         </div>

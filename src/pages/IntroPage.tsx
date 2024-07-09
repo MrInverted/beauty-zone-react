@@ -9,8 +9,6 @@ import About from '../components/about';
 import Card from '../components/card';
 import { useAppSelector } from '../redux/store';
 
-
-
 function IntroPage() {
   const { isCard } = useAppSelector(store => store.card)
 
