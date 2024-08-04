@@ -1,4 +1,5 @@
 export const allStates = [
+  // { abbreviation: "", english: "", russian: "" },
   { abbreviation: "AL", english: "Alabama", russian: "Алабама" },
   { abbreviation: "AK", english: "Alaska", russian: "Аляска" },
   { abbreviation: "AZ", english: "Arizona", russian: "Аризона" },
@@ -53,6 +54,8 @@ export const allStates = [
 ] as const;
 
 export const allCities = [
+  // { state: "", english: "", russian: "" },
+
   // Alabama
   { state: "Алабама", english: "Birmingham", russian: "Бирмингем" },
   { state: "Алабама", english: "Montgomery", russian: "Монтгомери" },

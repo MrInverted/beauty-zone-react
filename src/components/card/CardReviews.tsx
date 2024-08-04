@@ -1,10 +1,12 @@
 import React from 'react'
 
-import { useAppDispatch } from '../../redux/store'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { showCardMakeReview } from '../../redux/card-slice'
+import { BACKEND_URL } from '../../data/url';
 
 function CardReviews() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
+  const { comments } = useAppSelector(store => store.card);
 
   const onLeaveAReviewClick = () => dispatch(showCardMakeReview())
 
@@ -15,44 +17,27 @@ function CardReviews() {
         <button className="btn-light" onClick={onLeaveAReviewClick}>Оставить отзыв</button>
       </div>
 
-      <article className="reviews__item">
-        <div className="reviews__title">
-          <h5>Александра Егорова</h5>
-          <span className="reviews__date">28/04/23</span>
-        </div>
+      {comments.length === 0 && <span>Комментариев нету, Вы можете оставить первый комментарий</span>}
 
-        <div className="reviews__rating">
-          <img src="/images/masters-rating-star-filled.svg" alt="" />
-          <img src="/images/masters-rating-star-filled.svg" alt="" />
-          <img src="/images/masters-rating-star-filled.svg" alt="" />
-          <img src="/images/masters-rating-star-filled.svg" alt="" />
-          <img src="/images/masters-rating-star-empty.svg" alt="" />
-        </div>
-        <p className="reviews__text">Искреннее обожаю прически от Марии. Всегда идеальное попадание и стойкость на весь день. Спасибо огромное, ценю Вас ❤️</p>
-        <div className="reviews__photos">
-          <div className="reviews__image">
-            <img src="./images/card/1.jpg" alt="" data-fancybox="review-1" data-src="./images/card/1.jpg" />
+      {comments.map((el, index) => (
+        <article className="reviews__item" key={index}>
+          <div className="reviews__title">
+            <h5>{el?.name}</h5>
+            <span className="reviews__date">{new Date(el?.createdAt).toLocaleString()}</span>
           </div>
-          <div className="reviews__image">
-            <img src="./images/card/2.jpg" alt="" data-fancybox="review-1" data-src="./images/card/2.jpg" />
-          </div>
-        </div>
-      </article>
 
-      <article className="reviews__item">
-        <div className="reviews__title">
-          <h5>Александра Егорова</h5>
-          <span className="reviews__date">28/04/23</span>
-        </div>
-        <div className="reviews__rating">
-          <img src="/images/masters-rating-star-filled.svg" alt="" />
-          <img src="/images/masters-rating-star-filled.svg" alt="" />
-          <img src="/images/masters-rating-star-filled.svg" alt="" />
-          <img src="/images/masters-rating-star-filled.svg" alt="" />
-          <img src="/images/masters-rating-star-empty.svg" alt="" />
-        </div>
-        <p className="reviews__text">Искреннее обожаю прически от Марии. Всегда идеальное попадание и стойкость на весь день. Спасибо огромное, ценю Вас ❤️</p>
-      </article>
+          <div className="reviews__rating">
+            {new Array(5).fill("").map((_, index) => <img key={index} src={`/images/masters-rating-star-${el.rating > index ? "filled" : "empty"}.svg`} alt="" />)}
+          </div>
+          <p className="reviews__text">{el?.text}</p>
+          <div className="reviews__photos">
+            <div className="reviews__image">
+              <img src={`${BACKEND_URL}${el.imageUrl}`} alt="" data-fancybox="review-1" data-src={`${BACKEND_URL}${el.imageUrl}`} />
+            </div>
+          </div>
+        </article>
+      ))}
+
     </div>
   )
 }

@@ -3,7 +3,8 @@ import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { InputPassword } from '../modal/InputPassword';
 import { useAppDispatch } from '../../redux/store';
-import { closeLoginRegisterRecoveryModals, showLoginModal } from '../../redux/modals-slice';
+import { showLoginModal } from '../../redux/modals-slice';
+import { setFirstStepRegister } from '../../redux/register-slice';
 
 
 interface IForm {
@@ -21,14 +22,12 @@ interface IRegister {
 
 function RegisterOne({ setStep }: IRegister) {
   const { register, handleSubmit, formState, reset } = useForm<IForm>({ mode: 'onChange', reValidateMode: 'onChange' });
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const onFormSubmit: SubmitHandler<IForm> = (data) => {
-    console.log(data)
-
-    setStep(2)
-
-    reset()
+    dispatch(setFirstStepRegister(data));
+    setStep(2);
+    reset();
   }
 
   const onLoginClick = () => dispatch(showLoginModal());
@@ -71,7 +70,13 @@ function RegisterOne({ setStep }: IRegister) {
           minLength: { value: 6, message: "Пароль слишком короткий" }
         })} />
 
-        <button type="submit" className="btn-dark" disabled={Boolean(isError)}>Далее</button>
+        <button
+          type="submit"
+          className="btn-dark"
+          disabled={!formState.isValid}
+        >
+          Далее
+        </button>
 
         <p className='modal__question'>Уже есть аккаунт? <span onClick={onLoginClick}>Войти</span></p>
 

@@ -1,15 +1,16 @@
-import React from 'react'
 import "./categories.scss"
 import 'swiper/css';
 import "swiper/css/grid"
 
+import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Grid, Navigation } from 'swiper/modules';
 import { CategoriesCard } from './CategoriesCard';
 import { allServices } from '../../data/catalogue';
+
 import { useAppDispatch } from '../../redux/store';
 import { setSortingServiceSingle } from '../../redux/sorting-slice';
-import { Link } from 'react-router-dom';
+import { fetchArticlesWithSorting } from '../../redux/sorting-slice-fetching';
 
 
 
@@ -17,8 +18,8 @@ export default function () {
   const dispatch = useAppDispatch()
 
   const onCategoryClick = (service: string) => {
-    dispatch(setSortingServiceSingle(service))
-    // ...axios 
+    dispatch(setSortingServiceSingle(service));
+    dispatch(fetchArticlesWithSorting);
   }
 
   return (

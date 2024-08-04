@@ -1,8 +1,11 @@
 import React from 'react'
-
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useAppDispatch, useAppSelector } from '../redux/store';
+import axios from 'axios';
+import { setPersonalInfo } from '../redux/account-slice';
+import { BACKEND_URL } from '../data/url';
 
-interface IForm {
+interface IAddressForm {
   name: string;
   surname: string;
   email: string;
@@ -19,10 +22,18 @@ interface IUsePasswordForm {
 
 
 function useAddressForm({ setIsEditing }: IUsePasswordForm) {
-  const { handleSubmit, register, formState } = useForm<IForm>({ mode: "all" })
+  const dispatch = useAppDispatch()
+  const { personalInfo } = useAppSelector(store => store.account);
+  const { token } = useAppSelector(store => store.auth);
+  const { handleSubmit, register, formState } = useForm<IAddressForm>({ mode: "all", defaultValues: personalInfo });
 
-  const onFormSubmit: SubmitHandler<IForm> = (data) => {
-    console.log(data)
+  const onFormSubmit: SubmitHandler<IAddressForm> = (data) => {
+    const Authorization = `Bearer ${token}`
+
+    axios.patch(`${BACKEND_URL}/api/account/personal/info`, data, { headers: { Authorization } })
+      .then(success => dispatch(setPersonalInfo(success.data.user)))
+      .catch(err => console.log(err.response?.data))
+
     setIsEditing(false)
   }
 

@@ -12,6 +12,7 @@
 
   &__logo {
     width: 324px;
+    flex: 1;
 
     a:hover {
       opacity: 0.6;
@@ -101,8 +102,9 @@
   &__login {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 20px;
+    flex: 1;
 
     a:last-child {
       display: flex;

@@ -2,19 +2,21 @@ import React from 'react'
 
 interface IMainImage {
   isEditing: boolean;
-  mainFileUrl: string;
+  mainImage: File | null | undefined;
   onAddMainImageClick: () => void;
   onMainImageDelete: () => void;
 }
 
-function MainImage({ isEditing, mainFileUrl, onAddMainImageClick, onMainImageDelete }: IMainImage) {
+function MainImage({ isEditing, mainImage, onAddMainImageClick, onMainImageDelete }: IMainImage) {
+  const url = mainImage ? URL.createObjectURL(mainImage) : "";
+
   return (
     <div className="cabinet__article-image">
 
       {isEditing
         ? (<>
           <div className="add-image" onClick={onAddMainImageClick}>
-            {mainFileUrl ? <img src={mainFileUrl} alt="" /> : <span>+ Добавить</span>}
+            {url ? <img src={url} alt="" /> : <span>+ Добавить</span>}
           </div>
 
           <div className="close" onClick={onMainImageDelete}>
@@ -23,7 +25,7 @@ function MainImage({ isEditing, mainFileUrl, onAddMainImageClick, onMainImageDel
         </>)
         : (<>
           <div className="add-image">
-            {mainFileUrl && <img src={mainFileUrl} alt="" />}
+            {url && <img src={url} alt="" />}
           </div>
         </>)
       }

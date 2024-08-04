@@ -1,5 +1,8 @@
+import axios from 'axios';
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useAppSelector } from '../redux/store';
+import { BACKEND_URL } from '../data/url';
 
 interface IForm {
   oldPassword: string;
@@ -14,11 +17,17 @@ interface IUsePasswordForm {
 
 
 function usePasswordForm({ setIsEditing }: IUsePasswordForm) {
+  const { token } = useAppSelector(store => store.auth);
   const { handleSubmit, register, formState, setValue, getValues, setError, clearErrors } = useForm<IForm>({ mode: "all" })
 
   const onFormSubmit: SubmitHandler<IForm> = (data) => {
-    console.log(data)
-    setIsEditing(false)
+    const Authorization = `Bearer ${token}`
+
+    axios.patch(`${BACKEND_URL}/api/account/personal/password`, data, { headers: { Authorization } })
+      .then(success => console.log(success.data))
+      .catch(err => setError("root", { message: err.response?.data?.err }))
+
+    setIsEditing(false);
   }
 
   const onRepeatedPasswordChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {

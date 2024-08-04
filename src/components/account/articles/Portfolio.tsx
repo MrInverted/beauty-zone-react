@@ -1,8 +1,10 @@
 import React from 'react'
 
+type FileType = File | null | undefined;
+
 interface IPortfolio {
   isEditing: boolean;
-  portfolio: string[];
+  portfolio: FileType[];
   onAddPortfolioImageClick: () => void;
   onPortfolioImageDelete: (index: number) => void;
 }
@@ -19,16 +21,19 @@ function Portfolio({ isEditing, portfolio, onAddPortfolioImageClick, onPortfolio
           </div>
         </>}
 
-        {portfolio.map((item, index) => (
-          <div className="image">
-            <img src={item} alt="" />
+        {portfolio.map((item, index) => {
+          const url = item ? URL.createObjectURL(item) : "";
+
+          return <div className="image" key={index}>
+            <img src={url} alt="" />
             {isEditing && <>
               <div className="close" onClick={onPortfolioImageDelete.bind(null, index)}>
                 <span>×</span>
               </div>
             </>}
           </div>
-        ))}
+        }
+        )}
 
         {portfolio.length === 0 && isEditing === false && <div className="add-image" />}
 

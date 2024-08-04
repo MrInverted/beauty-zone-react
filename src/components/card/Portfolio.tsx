@@ -4,6 +4,7 @@ import "swiper/css/grid"
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
+import { BACKEND_URL } from '../../data/url';
 
 interface IProtfolio {
   items: string[]
@@ -32,7 +33,7 @@ function Portfolio({ items }: IProtfolio) {
       {items.map((el, index) => (
         <SwiperSlide key={index}>
           <div className="card__slide">
-            <img src={el} alt="" data-fancybox="portfolio" data-src={el} />
+            <img src={`${BACKEND_URL}${el}`} alt="" data-fancybox="portfolio" data-src={`${BACKEND_URL}${el}`} />
           </div>
         </SwiperSlide>))}
 

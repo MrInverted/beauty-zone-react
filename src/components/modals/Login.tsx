@@ -1,33 +1,55 @@
-import React from 'react'
+import axios, { AxiosError } from 'axios';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { toast } from "react-hot-toast";
 
 import Modal from "../modal";
-
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { InputPassword } from '../modal/InputPassword';
-
 import { closeLoginRegisterRecoveryModals, showRecoveryModal, showRegisterModal } from '../../redux/modals-slice';
 import { useAppDispatch } from '../../redux/store';
+import { setIsAuth } from '../../redux/auth-slice';
+import { BACKEND_URL } from '../../data/url';
 
 interface IForm {
   email: string;
   password: string
 }
 
+interface IResponse {
+  err?: string;
+  success?: string;
+  ownerId?: string;
+}
+
 
 
 function Login() {
   const dispatch = useAppDispatch();
-  const { register, handleSubmit, formState, reset } = useForm<IForm>({
+  const navigate = useNavigate()
+  const { register, handleSubmit, formState, reset, setError, clearErrors } = useForm<IForm>({
     mode: 'onChange',
-    reValidateMode: 'onChange'
+    reValidateMode: 'onChange',
   });
 
-  const onFormSubmit: SubmitHandler<IForm> = (data) => {
-    console.log(data)
+  const onFormSubmit: SubmitHandler<IForm> = async (inc) => {
+    try {
+      const { data } = await axios.post<IResponse>(`${BACKEND_URL}/api/auth/login`, inc);
+      dispatch(setIsAuth({ token: data.success, ownerId: data.ownerId }));
+      dispatch(closeLoginRegisterRecoveryModals());
+      reset();
+      navigate("/account");
 
-    reset()
-
-    dispatch(closeLoginRegisterRecoveryModals())
+      window.localStorage.setItem("token", data.success as string);
+      window.localStorage.setItem("ownerId", data.ownerId as string);
+    } catch (e) {
+      const error = e as AxiosError<IResponse>;
+      const message = error.response?.data.err;
+      if (message) {
+        setError("root", { message });
+      } else {
+        toast.error("Что-то пошло не так...", { position: 'top-center' })
+      }
+    }
   }
 
   const onCloseModal = () => dispatch(closeLoginRegisterRecoveryModals());
@@ -45,7 +67,6 @@ function Login() {
         <div className="modal__error">
           <img src="/images/modal-error.svg" alt="" />
           <span>{isError}</span>
-          {/* <span>Неверный адрес электронной почты или пароль</span> */}
         </div>
       </>}
 
@@ -53,12 +74,14 @@ function Login() {
         <input type="text" placeholder="E-mail" {...register("email", {
           required: { value: true, message: "E-mail обязателен к заполнению" },
           minLength: { value: 10, message: "E-mail слишком короткий" },
-          pattern: { value: /\S{3,}@\w{2,}\.\w{2,}/gi, message: "E-mail неверного формата" }
+          pattern: { value: /\S{3,}@\w{2,}\.\w{2,}/gi, message: "E-mail неверного формата" },
+          onChange: () => clearErrors("root")
         })} />
 
         <InputPassword register={register("password", {
           required: { value: true, message: "Пароль обязателен к заполнению" },
-          minLength: { value: 6, message: "Пароль слишком короткий" }
+          minLength: { value: 6, message: "Пароль слишком короткий" },
+          onChange: () => clearErrors("root")
         })} />
 
         <p className='modal__question'>Забыли пароль? <span onClick={onRecoveryPasswordClick}>Восстановить пароль</span></p>
@@ -66,7 +89,7 @@ function Login() {
         <button
           type="submit"
           className="btn-dark"
-          disabled={Boolean(isError)}
+          disabled={!formState.isValid}
         >
           Войти
         </button>

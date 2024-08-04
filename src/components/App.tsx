@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useAppSelector } from '../redux/store';
+import { Toaster } from 'react-hot-toast';
 
 import Header from '../layouts/header';
 import Footer from '../layouts/footer';
@@ -14,19 +15,22 @@ import { Login } from './modals/Login';
 import { Recovery } from './modals/Recovery';
 import { Register } from './modals/Register';
 
+import { useToAccount } from '../hooks/useToAccount';
+
 
 
 function App() {
   const { isLogin, isRegister, isRecovery } = useAppSelector(store => store.modals);
+  const { isAuth } = useToAccount();
 
   return <>
     <Header />
 
     <Routes>
-      <Route path='/' element={<IntroPage />} />
+      <Route index element={<IntroPage />} />
       <Route path='/master' element={<MasterPage />} />
       <Route path='/catalogue' element={<CataloguePage />} />
-      <Route path='/account' element={<AccountPage />} />
+      <Route path='/account' element={isAuth ? <AccountPage /> : <IntroPage />} />
     </Routes>
 
     <Footer />
@@ -34,6 +38,8 @@ function App() {
     {isLogin && <Login />}
     {isRecovery && <Recovery />}
     {isRegister && <Register />}
+
+    <Toaster />
   </>;
 }
 

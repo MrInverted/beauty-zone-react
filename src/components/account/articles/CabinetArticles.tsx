@@ -4,7 +4,8 @@ import { AddAnArticle } from './AddAnArticle'
 import { useAppSelector } from '../../../redux/store'
 
 function CabinetArticles() {
-  const { isArticleForm } = useAppSelector(store => store.addArticle)
+  const { isArticleForm } = useAppSelector(store => store.addArticle);
+  const { } = useAppSelector(store => store.account)
 
   return (
     <div className="cabinet__right cabinet-articles">

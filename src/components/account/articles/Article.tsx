@@ -1,16 +1,16 @@
 import React from 'react'
-import { useAppDispatch, useAppSelector } from '../../../redux/store';
+import { useAppSelector } from '../../../redux/store';
 import { useArticleForm } from '../../../hooks/useArticleForm';
 import { Portfolio } from './Portfolio';
 import { MainImage } from './MainImage';
 import { Fields } from './Fields';
 import { Buttons } from '../Buttons';
 import { Error } from "../Error"
+import { FieldsMore } from './FieldsMore';
 
 
 
 function Article() {
-  const dispatch = useAppDispatch();
   const { service } = useAppSelector(store => store.addArticle)
 
   const [isEditing, setIsEditing] = React.useState(false);
@@ -21,6 +21,7 @@ function Article() {
     handleSubmit,
     register,
     setValue,
+    setError,
     isError,
 
     inputPortfolioFileRef,
@@ -29,7 +30,7 @@ function Article() {
 
     inputMainFileRef,
     mainFile,
-    mainFileUrl,
+    mainImage,
 
     onAddPortfolioImageClick,
     onAddMainImageClick,
@@ -56,40 +57,27 @@ function Article() {
           <div className="cabinet__article">
             <div className="cabinet__title">
               <h2 onClick={onTitleClick}>{service}</h2>
+
               <Buttons {...{ isEditing, onCancelClick, onEditClick }} />
             </div>
 
             <Error {...{ isEditing, isError }} />
 
             <div className="cabinet__article-grid">
-              <MainImage {...{ isEditing, mainFileUrl, onAddMainImageClick, onMainImageDelete }} />
+              <MainImage {...{ isEditing, mainImage, onAddMainImageClick, onMainImageDelete }} />
+
               <Fields {...{ isEditing, register, setValue }} />
             </div>
 
-            <label>
-              <span>Описание</span>
-              <textarea
-                readOnly={!isEditing}
-                placeholder="Напишите о себе или подробнее о предостовляемой услуге.
-Пожалуйста, не вводите тут ссылки на соцсети или сайты, номера телефонов."
-                {...register("description", {
-                  required: { value: true, message: "Укажите описание" },
-                  minLength: { value: 20, message: "Миниамльная длина описаняи 20 символов" }
-                })}
-              />
-            </label>
+            <FieldsMore {...{ isEditing, register, setValue, setError }} />
 
-            <div className="row-service-price">
-              <label>
-                <span>Услуги</span>
-                <input type="text" placeholder="Введите название услуги" />
-              </label>
-              <label>
-                <span>Цена</span>
-                <input type="text" placeholder="от $100" />
-              </label>
-              {isEditing && <p>+ Добавить строку</p>}
-            </div>
+            <Portfolio {...{ isEditing, portfolio, onAddPortfolioImageClick, onPortfolioImageDelete }} />
+
+            {isEditing && <>
+              <div className="row justify-end">
+                <button className="btn-light" type='button' onClick={onDeleteClick}>Удалить объявление</button>
+              </div>
+            </>}
 
             <input
               type="file"
@@ -110,14 +98,6 @@ function Article() {
               hidden={true}
               style={{ display: "none", visibility: "hidden" }}
             />
-
-            <Portfolio {...{ isEditing, portfolio, onAddPortfolioImageClick, onPortfolioImageDelete }} />
-
-            {isEditing && <>
-              <div className="row justify-end">
-                <button className="btn-light" type='button' onClick={onDeleteClick}>Удалить объявление</button>
-              </div>
-            </>}
 
           </div>
         </div>

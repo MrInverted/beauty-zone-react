@@ -1,6 +1,7 @@
 import React from 'react'
 import { Buttons } from '../Buttons';
 import { useAddressForm } from '../../../hooks/useAddressForm';
+import { Error } from '../Error';
 
 
 function Address() {
@@ -30,7 +31,7 @@ function Address() {
             type="text"
             readOnly={!isEditing}
             {...register("name", {
-              required: { value: true, message: "Укажите имя" }
+              required: { value: true, message: "Укажите имя" },
             })}
           />
         </label>
@@ -103,12 +104,7 @@ function Address() {
           </label>
         </div>
 
-        {isEditing && isError && <>
-          <div className='error'>
-            <img src="/images/modal-error.svg" alt="" />
-            <span>{isError}</span>
-          </div>
-        </>}
+        <Error {...{ isEditing, isError }} />
 
       </div>
     </form>

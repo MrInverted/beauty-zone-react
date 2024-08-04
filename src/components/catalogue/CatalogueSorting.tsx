@@ -1,7 +1,10 @@
-import React from 'react'
-
 import { CatalogueSortingItem } from './CatalogueSortingItem';
 import { allServices } from '../../data/catalogue';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../redux/store';
+import { fetchArticlesWithSorting } from '../../redux/sorting-slice-fetching';
+import { setSortingPage } from '../../redux/sorting-slice';
+import { setCurrentPage } from '../../redux/article-slice';
 
 interface ICatalogueSorting {
   isMobileFiltersOpened: boolean;
@@ -11,9 +14,17 @@ interface ICatalogueSorting {
 
 
 function CatalogueSorting({ isMobileFiltersOpened, onCloseFiltersClick }: ICatalogueSorting) {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const isIntroPage = (pathname === "/");
 
   const onApplySortingClick = () => {
-    // ...axios
+    if (isIntroPage) navigate("/catalogue");
+
+    dispatch(setSortingPage(0));
+    dispatch(setCurrentPage(1));
+    dispatch(fetchArticlesWithSorting());
   }
 
   return (

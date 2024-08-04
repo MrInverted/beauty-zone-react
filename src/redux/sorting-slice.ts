@@ -3,19 +3,21 @@ import { AllServiceType } from '../data/catalogue';
 import { AllCitiesType, AllStatesType } from "../data/location";
 
 interface ISortingState {
-  state: AllStatesType | "Выберите штат";
-  city: AllCitiesType | "Выберите город";
+  state: AllStatesType | "";
+  city: AllCitiesType | "";
   service: AllServiceType[] | [];
   price: { min: number, max: number };
-  sort: "По популярности" | "По рейтингу" | "По цене"
+  sort: "" | "По популярности" | "По рейтингу" | "По цене";
+  page: number;
 }
 
 const initialState: ISortingState = {
-  state: "Выберите штат",
-  city: "Выберите город",
+  state: "",
+  city: "",
   service: [],
   price: { min: 0, max: 0 },
-  sort: "По популярности",
+  sort: "",
+  page: 0
 }
 
 const sortingSlice = createSlice({
@@ -51,6 +53,10 @@ const sortingSlice = createSlice({
 
     setSortingBy(state, action) {
       state.sort = action.payload;
+    },
+
+    setSortingPage(state, action) {
+      state.page = action.payload;
     }
   }
 })
@@ -64,5 +70,6 @@ export const {
   setSortingService,
   deleteSortingService,
   setSortingPrice,
-  setSortingBy
+  setSortingBy,
+  setSortingPage
 } = sortingSlice.actions;

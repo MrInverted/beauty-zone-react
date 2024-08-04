@@ -1,11 +1,15 @@
 import React from 'react'
 import "./header.scss";
 import { Link, NavLink } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { removeIsAuth } from '../../redux/auth-slice';
 
 
 
 export default function () {
+  const dispatch = useAppDispatch()
   const [isOpened, setIsOpened] = React.useState(false);
+  const { isAuth } = useAppSelector(store => store.auth)
 
   const onClickBurger = () => {
     if (isOpened) {
@@ -17,12 +21,11 @@ export default function () {
     setIsOpened(!isOpened);
   }
 
-  const onAddACardClick = () => {
-    // link to account
-  }
+  const onExitClick = () => {
+    dispatch(removeIsAuth())
 
-  const onPersonalAreaClick = () => {
-    // link to account
+    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("ownerId");
   }
 
   return (
@@ -42,12 +45,15 @@ export default function () {
             </nav>
 
             <div className="header__login">
-              <Link to="/account" className="btn-dark" onClick={onAddACardClick}>Добавить объявление</Link>
-
-              <Link to="/account" onClick={onPersonalAreaClick}>
+              <Link to="/account">
                 <img src="/images/header-account.svg" alt="" />
                 <span>Личный кабинет</span>
               </Link>
+
+              {isAuth && <Link to="/" onClick={onExitClick}>
+                <img src="/images/header-exit.svg" alt="" />
+                <span>Выйти</span>
+              </Link>}
             </div>
 
             <div className="header__burger-icon opened" onClick={onClickBurger}>
@@ -65,12 +71,15 @@ export default function () {
                 </nav>
 
                 <div className="header__login">
-                  <Link to="/account" className="btn-dark" onClick={onAddACardClick}>Добавить объявление</Link>
-
-                  <Link to="/account" onClick={onPersonalAreaClick}>
+                  <Link to="/account" >
                     <img src="/images/header-account.svg" alt="" />
                     <span>Личный кабинет</span>
                   </Link>
+
+                  {isAuth && <Link to="/" onClick={onExitClick}>
+                    <img src="/images/header-exit.svg" alt="" />
+                    <span>Выйти</span>
+                  </Link>}
                 </div>
               </div>
             </div>

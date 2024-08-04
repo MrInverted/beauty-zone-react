@@ -2,36 +2,52 @@ import React from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../redux/store';
-import { closeLoginRegisterRecoveryModals, showLoginModal } from '../../redux/modals-slice';
+import { showLoginModal } from '../../redux/modals-slice';
+import axios, { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
+import { setEmail } from '../../redux/register-slice';
+import { BACKEND_URL } from '../../data/url';
 
 interface IForm {
   email: string;
-  password: string;
 }
 
 interface IRecovery {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
+interface IResponse {
+  err?: string;
+  success?: string;
+}
+
 
 
 function RecoveryOne({ setStep }: IRecovery) {
   const dispatch = useAppDispatch()
-  const { register, handleSubmit, formState, reset } = useForm<IForm>({ mode: 'onChange', reValidateMode: 'onChange' });
+  const { register, handleSubmit, formState, reset, setError } = useForm<IForm>({ mode: 'onChange', reValidateMode: 'onChange' });
 
-  const onFormSubmit: SubmitHandler<IForm> = (data) => {
-    // after axios ... setError("root", { message: "Аккаунт с таким e-mail не найден" })
-    // onChange input ... clearError
-
-    setStep(2);
-
-    reset();
+  const onFormSubmit: SubmitHandler<IForm> = async (inc) => {
+    try {
+      const { data } = await axios.post(`${BACKEND_URL}/api/auth/recovery`, inc);
+      dispatch(setEmail(inc.email));
+      setStep(2);
+      reset();
+    } catch (e) {
+      const error = e as AxiosError<IResponse>;
+      const message = error.response?.data.err;
+      if (message) {
+        setError("root", { message });
+      } else {
+        toast.error("Что-то пошло не так...", { position: 'top-center' })
+      }
+    }
   }
+
 
   const onLoginClick = () => dispatch(showLoginModal())
 
   const isError = formState.errors.email?.message
-    || formState.errors.password?.message
     || formState.errors.root?.message;
 
   return (<>
@@ -52,7 +68,7 @@ function RecoveryOne({ setStep }: IRecovery) {
       <button
         type="submit"
         className="btn-dark"
-        disabled={Boolean(isError)}>
+        disabled={!formState.isValid}>
         Восстановить
       </button>
 

@@ -1,25 +1,27 @@
 import React from 'react'
-import { Order } from './Order'
+import { Orders } from './Orders'
+import { useAppSelector } from '../../../redux/store';
+
 
 function CabinetOrders() {
-  const [isOpened, setIsOpened] = React.useState(false)
+  const { requests, articles } = useAppSelector(store => store.account);
 
-  const onTitleClick = () => setIsOpened(!isOpened)
+  const views = articles.reduce((accum, item) => accum + item.viewsCount, 0)
 
   return (
     <div className="cabinet__right cabinet-orders">
       <div className="cabinet__overview for-top-masters">
         <div className="cabinet__overview-item">
           <span>Просмотры:</span>
-          <span>1 167</span>
+          <span>{views}</span>
         </div>
         <div className="cabinet__overview-item">
           <span>Заявки:</span>
-          <span>574</span>
+          <span>{requests.length}</span>
         </div>
       </div>
 
-      <Order />
+      <Orders />
     </div>
   )
 }

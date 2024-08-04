@@ -136,7 +136,7 @@
 
   &__sub-row {
     display: grid;
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 1fr 100px;
     gap: 20px;
   }
 
@@ -163,5 +163,9 @@
         opacity: 0.6;
       }
     }
+  }
+
+  .intro__search-block {
+    margin-bottom: 20px;
   }
 }

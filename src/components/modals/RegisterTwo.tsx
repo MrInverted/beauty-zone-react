@@ -1,33 +1,55 @@
 import React from 'react'
-
+import toast from 'react-hot-toast';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useAppDispatch } from '../../redux/store';
-import { closeLoginRegisterRecoveryModals, showLoginModal } from '../../redux/modals-slice';
+import axios, { AxiosError } from 'axios';
+
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { showLoginModal } from '../../redux/modals-slice';
+import { setSecondStepRegister } from '../../redux/register-slice';
+import { IntroSearchState } from '../intro/IntroSearchState';
+import { IntroSearchCity } from '../intro/IntroSeacrhCity';
+import { BACKEND_URL } from '../../data/url';
 
 interface IForm {
   state: string;
   city: string;
   building: string;
   street: string;
-  district: string;
 }
 
 interface IRegister {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
+interface IResponse {
+  err?: string;
+  success?: string;
+}
+
+
 
 
 function RegisterTwo({ setStep }: IRegister) {
   const dispatch = useAppDispatch()
-  const { register, handleSubmit, formState, reset } = useForm<IForm>({ mode: 'onChange', reValidateMode: 'onChange' });
+  const registerData = useAppSelector(store => store.register);
+  const { register, handleSubmit, formState, reset, setError, setValue } = useForm<IForm>({ mode: 'onChange', reValidateMode: 'onChange' });
 
-  const onFormSubmit: SubmitHandler<IForm> = (data) => {
-    console.log(data)
+  const onFormSubmit: SubmitHandler<IForm> = async (inc) => {
+    dispatch(setSecondStepRegister(inc));
 
-    setStep(3)
-
-    reset()
+    try {
+      const { data } = await axios.post<IResponse>(`${BACKEND_URL}/auth/register`, { ...registerData, ...inc })
+      setStep(3);
+      reset();
+    } catch (e) {
+      const error = e as AxiosError<IResponse>;
+      const message = error.response?.data.err;
+      if (message) {
+        setError("root", { message });
+      } else {
+        toast.error("Что-то пошло не так...", { position: 'top-center' })
+      }
+    }
   }
 
   const onLoginClick = () => dispatch(showLoginModal());
@@ -36,7 +58,6 @@ function RegisterTwo({ setStep }: IRegister) {
     || formState.errors.city?.message
     || formState.errors.building?.message
     || formState.errors.street?.message
-    || formState.errors.district?.message
     || formState.errors.root?.message;
 
   return (
@@ -55,46 +76,30 @@ function RegisterTwo({ setStep }: IRegister) {
 
       <form action="/" method="post" onSubmit={handleSubmit(onFormSubmit)}>
 
-        <input type="text" placeholder="Штат" {...register("state", {
-          required: { value: true, message: "Штат обязателен к заполнению" },
-          minLength: { value: 3, message: "Штат слишком короткий" }
-        })} />
+        <IntroSearchState setValue={(state) => setValue("state", state)} />
 
-        <input type="text" placeholder="Город" {...register("city", {
-          required: { value: true, message: "Город обязателен к заполнению" },
-          minLength: { value: 3, message: "Город слишком короткий" }
-        })} />
+        <IntroSearchCity setValue={(city) => setValue("city", city)} />
 
         <div className="modal__sub-row">
-          <input type="text" placeholder="Дом" {...register("building", {
-            required: { value: true, message: "Дом обязателен к заполнению" },
-          })} />
-
           <input type="text" placeholder="Улица" {...register("street", {
             required: { value: true, message: "Улица обязательна к заполнению" },
           })} />
-        </div>
 
-        <input type="text" placeholder="Район" {...register("district", {
-          required: { value: true, message: "Район обязателен к заполнению" },
-        })} />
+          <input type="text" placeholder="Дом" {...register("building", {
+            required: { value: true, message: "Дом обязателен к заполнению" },
+          })} />
+        </div>
 
         <button
           type="submit"
           className="btn-dark"
-          disabled={Boolean(isError)}
+          disabled={!formState.isValid}
           style={{ marginBottom: "20px" }}
         >
           Регистрация
         </button>
 
-        <label className="modal__checkbox">
-          <input type="checkbox" checked required />
-          <span>Согласен(а) с <a href="">политикой конфидициальности</a></span>
-        </label>
-
         <p className='modal__question'>Уже есть аккаунт? <span onClick={onLoginClick}>Войти</span></p>
-
       </form>
     </>
   )

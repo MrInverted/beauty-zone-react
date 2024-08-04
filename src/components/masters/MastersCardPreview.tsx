@@ -1,7 +1,6 @@
-import React from 'react'
-
-import { MasterCardPreviewType } from '../../data/catalogue'
-type Props = MasterCardPreviewType & { onClick: () => void }
+import { IArticleModel } from '../../data/models'
+import { BACKEND_URL } from '../../data/url'
+type Props = IArticleModel & { onClick: () => void }
 
 
 
@@ -13,14 +12,14 @@ function MastersCardPreview(props: Props) {
       </div>
 
       <div className="masters__image">
-        <img src={props.image} alt="" />
+        <img src={`${BACKEND_URL}${props.mainFileLink}`} alt="" />
       </div>
 
       <div className="masters__main">
         <div className="masters__name">
-          <h3>{props.name}</h3>
+          <h3>{props.ownerId?.name}</h3>
 
-          {props.isPremium && <>
+          {props.isPremium && props.rating > 0 && <>
             <div className="masters__rating">
               <img src="/images/masters-rating-star-filled.svg" alt="" />
               <span>{props.rating}</span>
@@ -28,7 +27,7 @@ function MastersCardPreview(props: Props) {
           </>}
         </div>
 
-        <div className="masters__price">${props.price}</div>
+        <div className="masters__price">${props.priceMin}-{props.priceMax}</div>
 
         <p className="masters__text">{props.description}</p>
 
@@ -39,7 +38,7 @@ function MastersCardPreview(props: Props) {
 
         <div className="masters__info">
           <img src="/images/masters-location.svg" alt="" />
-          <span>{props.state}, {props.city}</span>
+          <span>{props.ownerId?.state}, {props.ownerId?.city}</span>
         </div>
 
         {props.isPremium && <div className="masters__label">Топ</div>}

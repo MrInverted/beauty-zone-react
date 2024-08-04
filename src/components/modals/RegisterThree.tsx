@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useAppDispatch } from '../../redux/store';
 import { showLoginModal } from '../../redux/modals-slice';
 

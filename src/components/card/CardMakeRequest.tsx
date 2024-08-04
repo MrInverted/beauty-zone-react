@@ -1,33 +1,56 @@
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { useAppDispatch } from '../../redux/store';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { closeCardRequest } from '../../redux/card-slice';
 
 import Modal from "../modal"
+import axios, { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
+import { BACKEND_URL } from '../../data/url';
 
 interface IForm {
   name: string;
-  tel: string;
+  phone: string;
   text: string;
+}
+
+interface IResponse {
+  err?: string;
+  success?: string;
 }
 
 
 
-function CardRequest() {
-  const dispatch = useAppDispatch()
-  const { handleSubmit, register, formState, reset } = useForm<IForm>({ mode: "onChange", reValidateMode: "onChange" })
+function CardMakeRequest() {
+  const dispatch = useAppDispatch();
+  const { _id, _ownerId } = useAppSelector(store => store.card)
+  const { handleSubmit, register, formState, reset, setError } = useForm<IForm>({ mode: "onChange", reValidateMode: "onChange" });
 
   const onFormSubmit: SubmitHandler<IForm> = (data) => {
-    console.log(data)
+    const toSend = {
+      ...data,
+      articleId: _id,
+      ownerId: _ownerId
+    }
 
-    reset()
+    axios.post(`${BACKEND_URL}/api/request`, toSend)
+      .then(() => reset())
+      .catch(e => {
+        const error = e as AxiosError<IResponse>;
+        const message = error.response?.data.err;
+        if (message) {
+          setError("root", { message });
+        } else {
+          toast.error("Что-то пошло не так...", { position: 'top-center' });
+        }
+      });
   }
 
   const onCloseRequestClick = () => dispatch(closeCardRequest())
 
   const isError = formState.errors.name?.message
-    || formState.errors.tel?.message
+    || formState.errors.phone?.message
     || formState.errors.text?.message
     || formState.errors.root?.message;
 
@@ -44,18 +67,18 @@ function CardRequest() {
         </>}
 
         <form onSubmit={handleSubmit(onFormSubmit)}>
-          <input type="text" placeholder="Имя" {...register("name", {
+          <input type="text" placeholder="Имя" autoComplete='off' {...register("name", {
             required: { value: true, message: "Имя обязателено к заполнению" },
             minLength: { value: 3, message: "Имя слишком короткое" }
           })} />
 
-          <input type="tel" placeholder="Номер телефона" {...register("tel", {
+          <input type="tel" placeholder="Номер телефона" autoComplete='off' {...register("phone", {
             required: { value: true, message: "Номер телефона обязателен к заполнению" },
             minLength: { value: 10, message: "Номер телефона слишком короткий" }
           })} />
 
 
-          <textarea placeholder="Комментарий" {...register("text", {
+          <textarea placeholder="Комментарий" autoComplete='off' {...register("text", {
             required: { value: true, message: "Текст обязателен к заполнению" },
             minLength: { value: 10, message: "Текст слишком короткий" }
           })} />
@@ -75,4 +98,4 @@ function CardRequest() {
   )
 }
 
-export { CardRequest }
+export { CardMakeRequest }

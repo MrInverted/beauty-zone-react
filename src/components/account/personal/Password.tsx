@@ -35,7 +35,8 @@ function Password() {
         })} />
 
         <InputPassword placeholder='Новый пароль' readOnly={!isEditing} register={register("newPassword", {
-          required: { value: true, message: "Укажите новый пароль" }
+          required: { value: true, message: "Укажите новый пароль" },
+          onChange: onRepeatedPasswordChange
         })} />
 
         <InputPassword placeholder='Повторите новый пароль' readOnly={!isEditing} register={register("newPasswordRepeated", {
@@ -43,12 +44,7 @@ function Password() {
           onChange: onRepeatedPasswordChange
         })} />
 
-        {isEditing && isError && <>
-          <div className='error'>
-            <img src="/images/modal-error.svg" alt="" />
-            <span>{isError}</span>
-          </div>
-        </>}
+        <Error {...{ isEditing, isError }} />
       </div>
     </form>
   )

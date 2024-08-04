@@ -10,14 +10,15 @@ function IntroSearchService() {
 
   const onServiceChange = (inc: string) => dispatch(setSortingServiceSingle(inc));
 
-  const serviceTitle = service.at(0) || "Какая услуга интересует";
+  const serviceTitle = service.at(0);
 
   return (
     <div className="intro__search-block span-2" onClick={() => setIsOpened(!isOpened)}>
-      <span>{serviceTitle}</span>
+      <span>{serviceTitle || "Какая услуга интересует"}</span>
       <img className={isOpened ? "active" : ""} src="/images/intro-polygon-down.svg" alt="" />
       <div className={`intro__search-dropdown ${isOpened ? "active" : ""}`}>
         <div className="min-height-0">
+          <span onClick={() => onServiceChange("")}>Все услуги</span>
           {allServices.map((el, index) => (
             <span
               key={index}

@@ -1,10 +1,13 @@
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { useAppDispatch } from '../../redux/store';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { closeCardMakeReview } from '../../redux/card-slice';
 
 import Modal from "../modal";
+import axios, { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
+import { BACKEND_URL } from '../../data/url';
 
 const defaultStars = new Array(5).fill("")
 
@@ -15,19 +18,25 @@ interface IForm {
   file?: File;
 }
 
+interface IResponse {
+  err?: string;
+  success?: string;
+}
+
 
 
 function CardMakeReview() {
-  const dispatch = useAppDispatch()
-  const [fileUrl, setFileUrl] = React.useState("")
-  const fileRef = React.useRef<HTMLInputElement>(null)
-  const [stars, setStars] = React.useState({ selected: 0, hovered: 0 })
+  const dispatch = useAppDispatch();
+  const { _id } = useAppSelector(store => store.card)
+  const [fileUrl, setFileUrl] = React.useState("");
+  const fileRef = React.useRef<HTMLInputElement>(null);
+  const [stars, setStars] = React.useState({ selected: 0, hovered: 0 });
   const { handleSubmit, register, reset, formState, setValue, setError, clearErrors, trigger } = useForm<IForm>({ mode: "all" })
 
-  const onCloseMakeReviews = () => dispatch(closeCardMakeReview())
-  const onAddPhotoClick = () => fileRef.current?.click()
-  const onStarHover = (index: number) => setStars({ ...stars, hovered: index + 1 })
-  const onStarClick = (index: number) => setStars({ ...stars, selected: index + 1 })
+  const onCloseMakeReviews = () => dispatch(closeCardMakeReview());
+  const onAddPhotoClick = () => fileRef.current?.click();
+  const onStarHover = (index: number) => setStars({ ...stars, hovered: index + 1 });
+  const onStarClick = (index: number) => setStars({ ...stars, selected: index + 1 });
 
   const setClassName = (index: number) => (stars.selected >= index + 1) ? 'hovered' :
     (stars.hovered >= index + 2) ? 'hovered' : '';
@@ -35,11 +44,28 @@ function CardMakeReview() {
   const onFormSubmit: SubmitHandler<IForm> = (data) => {
     const rating = stars.selected;
 
-    console.log({ ...data, rating });
+    const toSend = {
+      ...data,
+      rating,
+      articleId: _id
+    }
 
-    reset();
-    setStars({ selected: 0, hovered: 0 });
-    setFileUrl("");
+    axios.postForm(`${BACKEND_URL}/api/comment/`, toSend)
+      .then(success => {
+        console.log(success);
+        reset();
+        setStars({ selected: 0, hovered: 0 });
+        setFileUrl("");
+      })
+      .catch(e => {
+        const error = e as AxiosError<IResponse>;
+        const message = error.response?.data.err;
+        if (message) {
+          setError("root", { message });
+        } else {
+          toast.error("Что-то пошло не так...", { position: 'top-center' });
+        }
+      })
   }
 
   const onInputFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -135,7 +161,7 @@ function CardMakeReview() {
           <button
             type="submit"
             className="btn-dark"
-            disabled={!isValid}
+            disabled={!formState.isValid}
           >
             Отправить
           </button>

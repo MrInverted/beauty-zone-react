@@ -1,10 +1,11 @@
 import React from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { showCardRequest } from '../../redux/card-slice';
+import { showCardRequest, fetchCard } from '../../redux/card-slice';
 
 import { Portfolio } from './Portfolio';
 import { CardReviews } from './CardReviews';
+import { BACKEND_URL } from '../../data/url';
 
 
 
@@ -16,19 +17,25 @@ function CardMain() {
 
   const onLeaveARequestClick = () => dispatch(showCardRequest());
 
+  React.useEffect(() => {
+    dispatch(fetchCard(info._id));
+  }, [])
+
   return (<>
     <div className="card__row">
       <div className="card__left">
-        <img src={info.image} alt="" />
+        <img src={`${BACKEND_URL}${info.image}`} alt="" />
       </div>
 
       <div className="card__right">
         <div className="masters__name">
           <h3>{info.name}</h3>
-          <div className="masters__rating">
-            <img src="/images/masters-rating-star-filled.svg" alt="" />
-            <span>{info.rating}</span>
-          </div>
+          {(+info.rating > 0) && <>
+            <div className="masters__rating">
+              <img src="/images/masters-rating-star-filled.svg" alt="" />
+              <span>{info.rating}</span>
+            </div>
+          </>}
         </div>
 
         <div className="masters__price">${info.price}</div>
@@ -61,26 +68,15 @@ function CardMain() {
 
     <div className="card__services">
       <h4>Услуги</h4>
+
       <ul>
-        <li>
-          <span>Свадебные прически</span>
-          <span>от $100</span>
-        </li>
+        {info.services.map((el, index) => (
+          <li key={index}>
+            <span>{el.split("---").at(0)}</span>
+            <span>{el.split("---").at(1)}</span>
+          </li>
+        ))}
 
-        <li>
-          <span>Прически на длинные волосы</span>
-          <span>от $50</span>
-        </li>
-
-        <li>
-          <span>Стрижка на длинные волосы</span>
-          <span>от $40</span>
-        </li>
-
-        <li>
-          <span>Тонирование волос</span>
-          <span>от $40</span>
-        </li>
       </ul>
     </div>
 

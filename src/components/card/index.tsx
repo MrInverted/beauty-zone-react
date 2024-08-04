@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { closeCardModal } from '../../redux/card-slice';
 
 import { CardMain } from './CardMain';
-import { CardRequest } from './CardRequest';
+import { CardMakeRequest } from './CardMakeRequest';
 import { CardMakeReview } from './CardMakeReview';
 
 
@@ -25,7 +25,7 @@ export default function () {
 
         <CardMain />
 
-        {isRequest && <CardRequest />}
+        {isRequest && <CardMakeRequest />}
 
         {isMakeReview && <CardMakeReview />}
 

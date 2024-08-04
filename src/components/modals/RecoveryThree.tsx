@@ -3,6 +3,10 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { InputPassword } from '../modal/InputPassword';
+import axios, { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
+import { useAppSelector } from '../../redux/store';
+import { BACKEND_URL } from '../../data/url';
 
 interface IForm {
   code: string;
@@ -14,18 +18,36 @@ interface IRecovery {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
+interface IResponse {
+  err?: string;
+  success?: string;
+}
+
+
 
 
 function RecoveryThree({ setStep }: IRecovery) {
+  const { email } = useAppSelector(store => store.register);
   const { register, handleSubmit, formState, reset, setError, clearErrors } = useForm<IForm>({ mode: 'onChange', reValidateMode: 'onChange', });
 
-  const onFormSubmit: SubmitHandler<IForm> = (data) => {
-    if (data.passwordOne !== data.passwordTwo) {
+  const onFormSubmit: SubmitHandler<IForm> = async (inc) => {
+    if (inc.passwordOne !== inc.passwordTwo) {
       return setError("root", { message: "Подтверждение пароля должно совпадать с предоставленным паролем" })
     }
 
-    setStep(4);
-    reset();
+    try {
+      const { data } = await axios.patch(`${BACKEND_URL}/api/auth/recovery-password`, { ...inc, email });
+      setStep(4);
+      reset();
+    } catch (e) {
+      const error = e as AxiosError<IResponse>;
+      const message = error.response?.data.err;
+      if (message) {
+        setError("root", { message });
+      } else {
+        toast.error("Что-то пошло не так...", { position: 'top-center' })
+      }
+    }
   }
 
   const isError = formState.errors.code?.message
@@ -62,7 +84,7 @@ function RecoveryThree({ setStep }: IRecovery) {
       <button
         type="submit"
         className="btn-dark"
-        disabled={Boolean(isError)}
+        disabled={!formState.isValid}
         style={{ marginBottom: 0 }}
       >
         Восстановить
