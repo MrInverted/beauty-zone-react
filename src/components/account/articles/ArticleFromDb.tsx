@@ -1,5 +1,4 @@
 import React from 'react'
-import { useAppSelector } from '../../../redux/store';
 import { useArticleForm } from '../../../hooks/useArticleForm';
 import { Portfolio } from './Portfolio';
 import { MainImage } from './MainImage';
@@ -7,12 +6,12 @@ import { Fields } from './Fields';
 import { Buttons } from '../Buttons';
 import { Error } from "../Error"
 import { FieldsMore } from './FieldsMore';
+import { IArticleModel } from '../../../data/models';
+import { useArticleFormWithDefaultValues } from '../../../hooks/useArticleFormWithDefaultValue';
 
 
 
-function Article() {
-  const { service } = useAppSelector(store => store.addArticle);
-
+function ArticleFromDb(props: IArticleModel) {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isOpened, setIsOpened] = React.useState(false);
 
@@ -36,11 +35,12 @@ function Article() {
     onAddMainImageClick,
     onPortfolioImageDelete,
     onMainImageDelete
-  } = useArticleForm({ setIsEditing })
+  } = useArticleFormWithDefaultValues({ setIsEditing, ...props })
 
   const onTitleClick = () => setIsOpened(!isOpened);
   const onEditClick: React.MouseEventHandler<HTMLButtonElement> = (e) => { e.preventDefault(); setIsEditing(true); }
   const onCancelClick = () => setIsEditing(false);
+  const onDeleteClick = () => { }
 
 
 
@@ -48,14 +48,14 @@ function Article() {
     <form onSubmit={handleSubmit(onFormSubmit)} className='article-shadow'>
       <div className={isOpened ? "folded opened" : "folded"}>
         <div className="row flex-row" onClick={onTitleClick}>
-          <span>{service}</span>
+          <span>{props.service}</span>
           <img src="/images/account-chevron-down.svg" alt="" />
         </div>
 
         <div className="min-height-0">
           <div className="cabinet__article">
             <div className="cabinet__title">
-              <h2 onClick={onTitleClick}>{service}</h2>
+              <h2 onClick={onTitleClick}>{props.service}</h2>
 
               <Buttons {...{ isEditing, onCancelClick, onEditClick }} />
             </div>
@@ -68,9 +68,21 @@ function Article() {
               <Fields {...{ isEditing, register, setValue }} />
             </div>
 
-            <FieldsMore {...{ isEditing, register, setValue, setError }} />
+            <FieldsMore {...{
+              isEditing,
+              register,
+              setValue,
+              setError,
+              services: props.services.map(el => [el.split("---").at(0), el.split("---").at(1)]) as [string, string][]
+            }} />
 
             <Portfolio {...{ isEditing, portfolio, onAddPortfolioImageClick, onPortfolioImageDelete }} />
+
+            {isEditing && <>
+              <div className="row justify-end">
+                <button className="btn-light" type='button' onClick={onDeleteClick}>Удалить объявление</button>
+              </div>
+            </>}
 
             <input
               type="file"
@@ -100,4 +112,4 @@ function Article() {
   )
 }
 
-export { Article }
+export { ArticleFromDb }

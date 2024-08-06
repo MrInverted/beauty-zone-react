@@ -3,11 +3,12 @@ import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppSelector } from '../redux/store';
 import { BACKEND_URL } from '../data/url';
+import { IArticleModel } from '../data/models';
 
 type FileType = File | null | undefined;
 
-export interface IArticleForm {
-  mainFile: FileType;
+export interface IArticleFormWithDefaultValue {
+  mainFile: FileType | string;
   priceMin: number;
   priceMax: number;
   workingDays: string;
@@ -15,27 +16,40 @@ export interface IArticleForm {
   phoneNumber: string;
   description: string;
   services: [string, string][];
-  portfolio: FileType[];
+  portfolio: (FileType | string)[];
 }
 
-interface IUseArticleForm {
+interface IUseArticleForm extends IArticleModel {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-type HandleImageType = (file: FileType, fieldName: keyof IArticleForm) => FileType | undefined;
+type HandleImageType = (file: FileType, fieldName: keyof IArticleFormWithDefaultValue) => FileType | undefined;
 
 
 
-function useArticleForm({ setIsEditing }: IUseArticleForm) {
+function useArticleFormWithDefaultValues(props: IUseArticleForm) {
   const { service } = useAppSelector(store => store.addArticle)
   const { token } = useAppSelector(store => store.auth)
-  const { handleSubmit, register, formState, setValue, setError, clearErrors, trigger } = useForm<IArticleForm>({ mode: "all" })
+  const { handleSubmit, register, formState, setValue, setError, clearErrors, trigger } = useForm<IArticleFormWithDefaultValue>({
+    mode: "all",
+    defaultValues: {
+      mainFile: props.mainFileLink,
+      priceMin: props.priceMin,
+      priceMax: props.priceMax,
+      workingDays: props.workingDays,
+      workingHours: props.workingHours,
+      phoneNumber: props.phoneNumber,
+      description: props.description,
+      services: props.services.map(el => [el.split("---").at(0), el.split("---").at(1)]),
+      portfolio: props.portfolioLink
+    }
+  })
 
   const inputPortfolioFileRef = React.useRef<HTMLInputElement>(null);
   const inputMainFileRef = React.useRef<HTMLInputElement>(null);
 
-  const [mainImage, setMainImage] = React.useState<FileType>();
-  const [portfolio, setPortfolio] = React.useState<FileType[]>([]);
+  const [mainImage, setMainImage] = React.useState<FileType | string>(props.mainFileLink);
+  const [portfolio, setPortfolio] = React.useState<(FileType | string)[]>(props.portfolioLink);
 
   // -------------------
 
@@ -82,7 +96,7 @@ function useArticleForm({ setIsEditing }: IUseArticleForm) {
   React.useEffect(() => { setValue("portfolio", portfolio) }, [portfolio]);
   React.useEffect(() => { setValue("mainFile", mainImage) }, [mainImage]);
 
-  const onFormSubmit: SubmitHandler<IArticleForm> = (data) => {
+  const onFormSubmit: SubmitHandler<IArticleFormWithDefaultValue> = (data) => {
     if (data.mainFile) {
       clearErrors("mainFile")
     } else {
@@ -114,12 +128,12 @@ function useArticleForm({ setIsEditing }: IUseArticleForm) {
 
     formData.set("service", service)
 
-    axiosWithCredentials.postForm(`${BACKEND_URL}/api/article`, formData)
-      .then(res => console.log(res.data))
-      .then(() => setIsEditing(false))
-      .catch(err => console.log(err.response.data));
+    // axiosWithCredentials.patchForm(`${BACKEND_URL}/api/article`, formData)
+    //   .then(res => console.log(res.data))
+    //   .then(() => props.setIsEditing(false))
+    //   .catch(err => console.log(err.response.data));
 
-    console.log(data)
+    // console.log(data)
   }
 
   const isError = formState.errors.priceMin?.message
@@ -158,4 +172,4 @@ function useArticleForm({ setIsEditing }: IUseArticleForm) {
   }
 }
 
-export { useArticleForm }
+export { useArticleFormWithDefaultValues }

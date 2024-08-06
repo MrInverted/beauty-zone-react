@@ -1,11 +1,12 @@
 import React from 'react'
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { IArticleForm } from '../../../hooks/useArticleForm';
+import { IArticleFormWithDefaultValue } from '../../../hooks/useArticleFormWithDefaultValue';
 
 interface IFields {
   isEditing: boolean;
-  register: UseFormRegister<IArticleForm>;
-  setValue: UseFormSetValue<IArticleForm>;
+  register: UseFormRegister<any>;
+  setValue: UseFormSetValue<any>;
 }
 
 function Fields({ isEditing, register, setValue }: IFields) {

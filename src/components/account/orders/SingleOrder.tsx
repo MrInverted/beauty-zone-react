@@ -1,8 +1,8 @@
 import React from 'react'
-import { IRequest } from '../../../data/models';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useAppDispatch, useAppSelector } from '../../../redux/store';
 import { setRequests } from '../../../redux/account-slice';
+import { IRequest } from '../../../data/models';
 import { BACKEND_URL } from '../../../data/url';
 
 

@@ -1,22 +1,22 @@
 import React from 'react'
 import { UseFormRegister, UseFormSetError, UseFormSetValue } from 'react-hook-form';
 import { useAppDispatch } from '../../../redux/store';
-import { IArticleForm } from '../../../hooks/useArticleForm';
 
 interface IFieldsMore {
   isEditing: boolean;
-  register: UseFormRegister<IArticleForm>;
-  setValue: UseFormSetValue<IArticleForm>;
-  setError: UseFormSetError<IArticleForm>;
+  register: UseFormRegister<any>;
+  setValue: UseFormSetValue<any>;
+  setError: UseFormSetError<any>;
+  services?: [string, string][]
 }
 
 type ServicesType = [string, string]
 
 
 
-function FieldsMore({ isEditing, register, setValue, setError }: IFieldsMore) {
+function FieldsMore({ isEditing, register, setValue, setError, services: servicesInc }: IFieldsMore) {
   const dispatch = useAppDispatch()
-  const [services, setServices] = React.useState<ServicesType[]>([])
+  const [services, setServices] = React.useState<ServicesType[]>(servicesInc ?? [])
 
   const onAddServiceClick = () => setServices([...services, ["", ""]])
 
@@ -41,7 +41,7 @@ function FieldsMore({ isEditing, register, setValue, setError }: IFieldsMore) {
   })
 
   React.useEffect(() => {
-    setServices(services.filter(([name, price]) => name.trim() && price.trim()))
+    setServices(services.filter(([name, price]) => name?.trim() && price?.trim()))
   }, [isEditing])
 
   React.useEffect(() => {
@@ -73,6 +73,7 @@ function FieldsMore({ isEditing, register, setValue, setError }: IFieldsMore) {
                 type="text"
                 placeholder="Введите название услуги"
                 readOnly={!isEditing}
+                value={el.at(0)}
                 onChange={(e) => onServiceNameChange(e, index)}
               />
             ))}
@@ -88,6 +89,7 @@ function FieldsMore({ isEditing, register, setValue, setError }: IFieldsMore) {
                 type="text"
                 placeholder="от $100"
                 readOnly={!isEditing}
+                value={el.at(1)}
                 onChange={(e) => onServicePriceChange(e, index)}
               />
             ))}

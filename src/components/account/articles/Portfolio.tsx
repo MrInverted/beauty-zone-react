@@ -1,10 +1,11 @@
 import React from 'react'
+import { BACKEND_URL } from '../../../data/url';
 
 type FileType = File | null | undefined;
 
 interface IPortfolio {
   isEditing: boolean;
-  portfolio: FileType[];
+  portfolio: (FileType | string)[];
   onAddPortfolioImageClick: () => void;
   onPortfolioImageDelete: (index: number) => void;
 }
@@ -22,7 +23,8 @@ function Portfolio({ isEditing, portfolio, onAddPortfolioImageClick, onPortfolio
         </>}
 
         {portfolio.map((item, index) => {
-          const url = item ? URL.createObjectURL(item) : "";
+          const url = (item instanceof File) ? URL.createObjectURL(item) :
+            (typeof item === "string") ? `${BACKEND_URL}${item}` : "";
 
           return <div className="image" key={index}>
             <img src={url} alt="" />

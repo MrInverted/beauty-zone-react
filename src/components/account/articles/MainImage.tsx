@@ -1,14 +1,16 @@
 import React from 'react'
+import { BACKEND_URL } from '../../../data/url';
 
 interface IMainImage {
   isEditing: boolean;
-  mainImage: File | null | undefined;
+  mainImage: File | null | undefined | string;
   onAddMainImageClick: () => void;
   onMainImageDelete: () => void;
 }
 
 function MainImage({ isEditing, mainImage, onAddMainImageClick, onMainImageDelete }: IMainImage) {
-  const url = mainImage ? URL.createObjectURL(mainImage) : "";
+  const url = (mainImage instanceof File) ? URL.createObjectURL(mainImage) :
+    (typeof mainImage === "string") ? `${BACKEND_URL}${mainImage}` : "";
 
   return (
     <div className="cabinet__article-image">
