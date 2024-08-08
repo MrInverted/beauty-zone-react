@@ -3,9 +3,11 @@ import axios, { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { useAppSelector } from '../redux/store';
+import { useAppDispatch, useAppSelector } from '../redux/store';
 import { BACKEND_URL } from '../data/url';
 import { IResponse } from '../data/models';
+import { setArticles } from '../redux/account-slice';
+import { removeAnArticleForm } from '../redux/add-article-slice';
 
 type FileType = File | null | undefined;
 
@@ -31,8 +33,9 @@ type HandleImageType = (file: FileType, fieldName: keyof IArticleForm) => FileTy
 
 
 function useArticleForm({ setIsEditing }: IUseArticleForm) {
+  const dispatch = useAppDispatch();
   const { service } = useAppSelector(store => store.addArticle);
-  const { token } = useAppSelector(store => store.auth);
+  const { token, ownerId } = useAppSelector(store => store.auth);
   const { handleSubmit,
     register,
     formState,
@@ -98,7 +101,7 @@ function useArticleForm({ setIsEditing }: IUseArticleForm) {
   React.useEffect(() => { setValue("portfolio", portfolio) }, [portfolio]);
   React.useEffect(() => { setValue("mainFile", mainImage) }, [mainImage]);
 
-  const onFormSubmit: SubmitHandler<IArticleForm> = (data) => {
+  const onFormSubmit: SubmitHandler<IArticleForm> = async (data) => {
     if (data.mainFile) {
       clearErrors("mainFile")
     } else {
@@ -131,19 +134,23 @@ function useArticleForm({ setIsEditing }: IUseArticleForm) {
 
     console.log(data)
 
-    axiosWithCredentials.postForm(`${BACKEND_URL}/api/article`, formData)
-      .then(res => {
-        toast.success("Запрос успешно отправлен");
-        console.log(res.data);
-      })
-      .then(() => setIsEditing(false))
-      .catch(e => {
-        const error = e as AxiosError<IResponse>;
-        const message = error.response?.data.err;
-        if (message) setError("root", { message });
-        toast.error("Что-то пошло не так...");
-        console.warn(message);
-      });
+    try {
+      const createRes = await axiosWithCredentials.postForm(`${BACKEND_URL}/api/article`, formData)
+      setIsEditing(false);
+      console.log(createRes.data);
+
+      const getAllResponse = await axios.get(`${BACKEND_URL}/api/account/article/${ownerId}`)
+      dispatch(setArticles(getAllResponse.data.articles));
+      dispatch(removeAnArticleForm());
+      console.log(getAllResponse.data);
+      toast.success("Запрос успешно отправлен");
+    } catch (e) {
+      const error = e as AxiosError<IResponse>;
+      const message = error.response?.data.err;
+      if (message) setError("root", { message });
+      toast.error("Что-то пошло не так...");
+      console.warn(message);
+    }
   }
 
   const isError = formState.errors.priceMin?.message

@@ -10,6 +10,7 @@ import { useAppDispatch } from '../../redux/store';
 import { setIsAuth } from '../../redux/auth-slice';
 import { BACKEND_URL } from '../../data/url';
 import { IResponse } from '../../data/models';
+import { setPersonalInfo } from '../../redux/account-slice';
 
 interface IForm {
   email: string;
@@ -37,6 +38,9 @@ function Login() {
 
       window.localStorage.setItem("token", data.success as string);
       window.localStorage.setItem("ownerId", data.ownerId as string);
+
+      const verifyResponse = await axios.post(`${BACKEND_URL}/api/auth/verify`, { token: data.success });
+      dispatch(setPersonalInfo(verifyResponse.data?.info));
     } catch (e) {
       const error = e as AxiosError<IResponse>;
       const message = error.response?.data.err;

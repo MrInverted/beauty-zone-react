@@ -13,9 +13,14 @@ const addArticleSlice = createSlice({
       state.service = action.payload;
       state.isArticleForm = true;
     },
+
+    removeAnArticleForm(state) {
+      state.service = "";
+      state.isArticleForm = false;
+    }
   }
 })
 
 export { addArticleSlice };
 
-export const { setAddAnArticleService } = addArticleSlice.actions
+export const { setAddAnArticleService, removeAnArticleForm } = addArticleSlice.actions
