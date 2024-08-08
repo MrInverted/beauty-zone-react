@@ -143,14 +143,12 @@ function useArticleFormWithDefaultValues(props: IUseArticleForm) {
       const getAllResponse = await axios.get(`${BACKEND_URL}/api/account/article/${ownerId}`)
       dispatch(setArticles(getAllResponse.data.articles))
       console.log(getAllResponse.data);
+      toast.success("Запрос успешно отправлен");
     } catch (e) {
       const error = e as AxiosError<IResponse>;
       const message = error.response?.data.err;
-      if (message) {
-        setError("root", { message });
-      } else {
-        toast.error("Что-то пошло не так...")
-      }
+      if (message) setError("root", { message });
+      toast.error("Что-то пошло не так...");
       console.warn(message);
     }
   }

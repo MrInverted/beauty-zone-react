@@ -34,11 +34,14 @@ function useAddressForm({ setIsEditing }: IUsePasswordForm) {
     const Authorization = `Bearer ${token}`;
 
     axios.patch(`${BACKEND_URL}/api/account/personal/info`, data, { headers: { Authorization } })
-      .then(success => dispatch(setPersonalInfo(success.data.user)))
+      .then(success => {
+        dispatch(setPersonalInfo(success.data.user));
+        toast.success("Запрос успешно отправлен");
+      })
       .catch(e => {
         const error = e as AxiosError<IResponse>;
         const message = error.response?.data.err;
-        if (message) toast.error("Что-то пошло не так...")
+        toast.error("Что-то пошло не так...");
         console.warn(message);
       })
 

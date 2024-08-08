@@ -1,5 +1,7 @@
-import React from 'react'
-import { useArticleForm } from '../../../hooks/useArticleForm';
+import React from 'react';
+import toast from 'react-hot-toast';
+import axios, { AxiosError } from 'axios';
+
 import { Portfolio } from './Portfolio';
 import { MainImage } from './MainImage';
 import { Fields } from './Fields';
@@ -8,9 +10,7 @@ import { Error } from "../Error"
 import { FieldsMore } from './FieldsMore';
 import { IArticleModel, IResponse } from '../../../data/models';
 import { useArticleFormWithDefaultValues } from '../../../hooks/useArticleFormWithDefaultValue';
-import axios, { AxiosError } from 'axios';
 import { BACKEND_URL } from '../../../data/url';
-import toast from 'react-hot-toast';
 
 
 
@@ -49,7 +49,7 @@ function ArticleFromDb(props: IArticleModel) {
       .catch((e) => {
         const error = e as AxiosError<IResponse>;
         const message = error.response?.data.err;
-        if (message) toast.error("Что-то пошло не так...")
+        toast.error("Что-то пошло не так...")
         console.warn(message);
       })
   }

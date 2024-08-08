@@ -38,11 +38,8 @@ function CardMakeRequest() {
       .catch(e => {
         const error = e as AxiosError<IResponse>;
         const message = error.response?.data.err;
-        if (message) {
-          setError("root", { message });
-        } else {
-          toast.error("Что-то пошло не так...");
-        }
+        if (message) setError("root", { message });
+        toast.error("Что-то пошло не так...");
         console.warn(message);
       });
   }
