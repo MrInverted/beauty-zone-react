@@ -65,8 +65,7 @@ function RegisterTwo({ setStep }: IRegister) {
           <img src="/images/modal-error.svg" alt="" />
           <span>{isError}</span>
         </div>
-      </>
-      }
+      </>}
 
       <form action="/" method="post" onSubmit={handleSubmit(onFormSubmit)}>
 
@@ -95,9 +94,9 @@ function RegisterTwo({ setStep }: IRegister) {
         >
           Регистрация
         </button>
-
-        <p className='modal__question'>Уже есть аккаунт? <span onClick={onLoginClick}>Войти</span></p>
       </form>
+
+      <p className='modal__question'>Уже есть аккаунт? <span onClick={onLoginClick}>Войти</span></p>
     </>
   )
 }

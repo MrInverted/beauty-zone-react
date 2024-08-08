@@ -14,11 +14,8 @@ function IntroSearchState({ value, setValue }: IIntroSearchState) {
   const [isOpened, setIsOpened] = React.useState(false);
 
   const onStateChange = (inc: string) => {
-    if (value) {
-      setValue && setValue(inc);
-    } else {
-      dispatch(setSortingState(inc));
-    }
+    setValue && setValue(inc);
+    dispatch(setSortingState(inc));
   }
 
   return (

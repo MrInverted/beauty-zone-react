@@ -69,6 +69,7 @@ function Login() {
       </>}
 
       <form action="/" method="post" onSubmit={handleSubmit(onFormSubmit)}>
+
         <input type="text" placeholder="E-mail" {...register("email", {
           required: { value: true, message: "E-mail обязателен к заполнению" },
           minLength: { value: 10, message: "E-mail слишком короткий" },
@@ -91,9 +92,9 @@ function Login() {
         >
           Войти
         </button>
-
-        <p className='modal__question'>Еще нет аккаунта? <span onClick={onCreateAccountClick}>Создать аккаунт</span></p>
       </form>
+
+      <p className='modal__question'>Еще нет аккаунта? <span onClick={onCreateAccountClick}>Создать аккаунт</span></p>
 
     </Modal>
   )

@@ -14,11 +14,8 @@ function IntroSearchCity({ value, setValue }: IIntroSearchCity) {
   const [isOpened, setIsOpened] = React.useState(false);
 
   const onCityChange = (inc: string) => {
-    if (value) {
-      setValue && setValue(inc);
-    } else {
-      dispatch(setSortingCity(inc));
-    }
+    setValue && setValue(inc);
+    dispatch(setSortingCity(inc));
   }
 
   return (
