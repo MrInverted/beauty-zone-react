@@ -4,22 +4,26 @@ import { setSortingState } from '../../redux/sorting-slice';
 import { allStates } from '../../data/location';
 
 interface IIntroSearchState {
-  setValue?: (inc: string) => void
+  setValue?: (inc: string) => void;
+  value?: () => string;
 }
 
-function IntroSearchState({ setValue }: IIntroSearchState) {
+function IntroSearchState({ value, setValue }: IIntroSearchState) {
   const dispatch = useAppDispatch();
   const { state } = useAppSelector(store => store.sorting);
   const [isOpened, setIsOpened] = React.useState(false);
 
   const onStateChange = (inc: string) => {
-    dispatch(setSortingState(inc));
-    setValue && setValue(inc);
+    if (value) {
+      setValue && setValue(inc);
+    } else {
+      dispatch(setSortingState(inc));
+    }
   }
 
   return (
     <div className="intro__search-block" onClick={() => setIsOpened(!isOpened)}>
-      <span>{state || "Выберите штат"}</span>
+      {value ? <span>{value() || "Выберите штат"}</span> : <span>{state || "Выберите штат"}</span>}
       <img className={isOpened ? "active" : ""} src="/images/intro-polygon-down.svg" alt="" />
       <div className={`intro__search-dropdown ${isOpened ? "active" : ""}`}>
         <div className="min-height-0">

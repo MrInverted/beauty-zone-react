@@ -32,6 +32,7 @@ function RecoveryThree({ setStep }: IRecovery) {
 
     try {
       const { data } = await axios.patch(`${BACKEND_URL}/api/auth/recovery-password`, { ...inc, email });
+      toast.success("Запрос успешно отправлен");
       setStep(4);
       reset();
     } catch (e) {

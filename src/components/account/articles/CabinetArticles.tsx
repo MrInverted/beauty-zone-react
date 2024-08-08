@@ -10,7 +10,7 @@ function CabinetArticles() {
 
   return (
     <div className="cabinet__right cabinet-articles">
-      <p>Нажмите на кнопку “Добавить объявление”, чтобы создать свое первое объявление.</p>
+      {articles.length === 0 && <p>Нажмите на кнопку “Добавить объявление”, чтобы создать свое первое объявление.</p>}
 
       {articles.map(el => <ArticleFromDb key={el._id} {...el} />)}
 

@@ -231,19 +231,6 @@
     @media (max-width: 600px) {
       justify-self: center;
     }
-
-    &.special {
-
-      @media (max-width: 600px) {
-        .btn-light {
-          display: none;
-        }
-
-        .catalogue__pagination {
-          display: flex;
-        }
-      }
-    }
   }
 
   &__pagination {
@@ -268,10 +255,6 @@
 
     a.active {
       opacity: 1;
-    }
-
-    @media (max-width: 600px) {
-      display: none;
     }
   }
 
@@ -340,17 +323,13 @@
     position: relative;
     font-size: 14px;
 
-    &:hover {
-      background-color: white;
-      color: initial;
-    }
-
     img {
       margin-top: 4px;
       transform: rotate(180deg);
     }
 
     span {
+      color: black;
       text-wrap: nowrap;
     }
 
@@ -360,6 +339,7 @@
       }
 
       .catalogue__dropdown {
+        padding-top: 5px;
         grid-template-rows: 1fr;
         padding-bottom: 10px;
         border: 1px solid #383838;

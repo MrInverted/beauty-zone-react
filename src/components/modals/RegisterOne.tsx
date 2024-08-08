@@ -51,23 +51,26 @@ function RegisterOne({ setStep }: IRegister) {
 
         <input type="text" placeholder="Имя" {...register("name", {
           required: { value: true, message: "Имя обязателено к заполнению" },
-          minLength: { value: 3, message: "Имя слишком короткое" }
+          minLength: { value: 3, message: "Имя слишком короткое" },
+          pattern: { value: /^([а-яёА-ЯЁa-z]+)$/gi, message: "Для имени доступны только буквы и без пробелов" }
         })} />
 
         <input type="text" placeholder="Фамилия" {...register("surname", {
           required: { value: true, message: "Фамилия обязательна к заполнению" },
-          minLength: { value: 3, message: "Фамилия слишком короткая" }
+          minLength: { value: 3, message: "Фамилия слишком короткая" },
+          pattern: { value: /^([а-яёА-ЯЁa-z]+)$/gi, message: "Для фамилии доступны только буквы и без пробелов" }
         })} />
 
         <input type="text" placeholder="E-mail" {...register("email", {
           required: { value: true, message: "E-mail обязателен к заполнению" },
           minLength: { value: 10, message: "E-mail слишком короткий" },
-          pattern: { value: /\S{3,}@\w{2,}\.\w{2,}/gi, message: "E-mail неверного формата" }
+          pattern: { value: /^(\S{3,}@\w{2,}\.\w{2,})$/gi, message: "E-mail неверного формата" }
         })} />
 
         <InputPassword register={register("password", {
           required: { value: true, message: "Пароль обязателен к заполнению" },
-          minLength: { value: 6, message: "Пароль слишком короткий" }
+          minLength: { value: 6, message: "Пароль слишком короткий" },
+          pattern: { value: /^(\S+)$/gi, message: "Пароль неверного формата" }
         })} />
 
         <button

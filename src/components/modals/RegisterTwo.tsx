@@ -27,13 +27,14 @@ interface IRegister {
 function RegisterTwo({ setStep }: IRegister) {
   const dispatch = useAppDispatch()
   const registerData = useAppSelector(store => store.register);
-  const { register, handleSubmit, formState, reset, setError, setValue } = useForm<IForm>({ mode: 'onChange', reValidateMode: 'onChange' });
+  const { register, handleSubmit, formState, reset, setError, setValue, getValues } = useForm<IForm>({ mode: 'all' });
 
   const onFormSubmit: SubmitHandler<IForm> = async (inc) => {
     dispatch(setSecondStepRegister(inc));
 
     try {
       const { data } = await axios.post<IResponse>(`${BACKEND_URL}/api/auth/register`, { ...registerData, ...inc })
+      toast.success("Запрос успешно отправлен");
       setStep(3);
       reset();
     } catch (e) {
@@ -69,17 +70,20 @@ function RegisterTwo({ setStep }: IRegister) {
 
       <form action="/" method="post" onSubmit={handleSubmit(onFormSubmit)}>
 
-        <IntroSearchState setValue={(state) => setValue("state", state)} />
+        <IntroSearchState setValue={(state) => setValue("state", state)} value={() => getValues("state")} />
 
-        <IntroSearchCity setValue={(city) => setValue("city", city)} />
+        <IntroSearchCity setValue={(city) => setValue("city", city)} value={() => getValues("city")} />
 
         <div className="modal__sub-row">
           <input type="text" placeholder="Улица" {...register("street", {
             required: { value: true, message: "Улица обязательна к заполнению" },
+            minLength: { value: 3, message: "Улица слишком короткая" },
+            pattern: { value: /^([а-яёА-ЯЁa-z]+)$/gi, message: "Для улицы доступны только буквы и без пробелов" }
           })} />
 
           <input type="text" placeholder="Дом" {...register("building", {
             required: { value: true, message: "Дом обязателен к заполнению" },
+            pattern: { value: /^(\d+)$/gi, message: "Для дома доступны только цифры" }
           })} />
         </div>
 

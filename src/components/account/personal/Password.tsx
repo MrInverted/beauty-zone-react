@@ -19,6 +19,7 @@ function Password() {
     handleSubmit,
     register,
     isError,
+    onPasswordChange,
     onRepeatedPasswordChange
   } = usePasswordForm({ setIsEditing })
 
@@ -36,7 +37,7 @@ function Password() {
 
         <InputPassword placeholder='Новый пароль' readOnly={!isEditing} register={register("newPassword", {
           required: { value: true, message: "Укажите новый пароль" },
-          onChange: onRepeatedPasswordChange
+          onChange: onPasswordChange
         })} />
 
         <InputPassword placeholder='Повторите новый пароль' readOnly={!isEditing} register={register("newPasswordRepeated", {

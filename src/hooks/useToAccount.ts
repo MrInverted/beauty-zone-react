@@ -41,6 +41,7 @@ function useToAccount() {
     const isAccountPathName = (pathname === "/account");
 
     if (isAccountPathName === false) return;
+    if (isVerified === false) return;
     if (isAuth === true) return;
 
     navigate("/");

@@ -26,6 +26,7 @@ function RecoveryOne({ setStep }: IRecovery) {
   const onFormSubmit: SubmitHandler<IForm> = async (inc) => {
     try {
       const { data } = await axios.post(`${BACKEND_URL}/api/auth/recovery`, inc);
+      toast.success("Запрос успешно отправлен");
       dispatch(setEmail(inc.email));
       setStep(2);
       reset();
