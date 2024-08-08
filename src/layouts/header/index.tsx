@@ -11,21 +11,22 @@ export default function () {
   const [isOpened, setIsOpened] = React.useState(false);
   const { isAuth } = useAppSelector(store => store.auth);
 
-  const onClickBurger = () => {
-    if (isOpened) {
-      document.body.classList.remove("header-opened");
-    } else {
-      document.body.classList.add("header-opened");
-    }
+  const closeBurger = () => setIsOpened(false);
 
-    setIsOpened(!isOpened);
-  }
+  const onClickBurger = () => setIsOpened(!isOpened);
 
   const onExitClick = () => {
     dispatch(removeIsAuth());
+    setIsOpened(false);
 
     window.localStorage.removeItem("token");
     window.localStorage.removeItem("ownerId");
+  }
+
+  if (isOpened) {
+    document.body.classList.add("header-opened");
+  } else {
+    document.body.classList.remove("header-opened");
   }
 
   return (
@@ -34,14 +35,14 @@ export default function () {
         <div className="header__content">
           <div className="header__row">
             <div className="header__logo">
-              <Link to="/">
+              <Link to="/" onClick={closeBurger}>
                 <img src="/images/header-logo.svg" alt="" />
               </Link>
             </div>
 
             <nav className="header__chooser">
-              <NavLink to="/" >Я ищу мастера</NavLink>
-              <NavLink to="/master" >Я - мастер</NavLink>
+              <NavLink to="/">Я ищу мастера</NavLink>
+              <NavLink to="/master">Я - мастер</NavLink>
             </nav>
 
             <div className="header__login">
@@ -65,13 +66,13 @@ export default function () {
             <div className="min-height-0">
               <div className="mobile-content">
                 <nav className="header__chooser">
-                  <NavLink to="/">Я ищу мастера</NavLink>
-                  <NavLink to="/catalogue">Каталог мастеров</NavLink>
-                  <NavLink to="/master" className="">Я - мастер</NavLink>
+                  <NavLink to="/" onClick={closeBurger}>Я ищу мастера</NavLink>
+                  <NavLink to="/catalogue" onClick={closeBurger}>Каталог мастеров</NavLink>
+                  <NavLink to="/master" onClick={closeBurger}>Я - мастер</NavLink>
                 </nav>
 
                 <div className="header__login">
-                  <Link to="/account" >
+                  <Link to="/account" onClick={closeBurger}>
                     <img src="/images/header-account.svg" alt="" />
                     <span>Личный кабинет</span>
                   </Link>

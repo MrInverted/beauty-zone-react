@@ -323,6 +323,11 @@
     position: relative;
     font-size: 14px;
 
+    &:hover {
+      background-color: unset;
+      color: black;
+    }
+
     img {
       margin-top: 4px;
       transform: rotate(180deg);
