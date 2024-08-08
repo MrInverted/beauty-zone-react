@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import toast from 'react-hot-toast';
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useAppSelector } from '../redux/store';
 import { BACKEND_URL } from '../data/url';
@@ -24,8 +25,11 @@ function usePasswordForm({ setIsEditing }: IUsePasswordForm) {
     const Authorization = `Bearer ${token}`;
 
     axios.patch(`${BACKEND_URL}/api/account/personal/password`, data, { headers: { Authorization } })
-      .then(success => console.log(success.data))
-      .catch(err => setError("root", { message: err.response?.data?.err }))
+      .then(success => toast.success("Данные успешно обновлены"))
+      .catch(err => {
+        toast.error("Что-то пошло не так...")
+        setError("root", { message: err.response?.data?.err })
+      })
 
     setIsEditing(false);
   }

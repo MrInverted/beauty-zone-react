@@ -1,9 +1,9 @@
 import React from 'react'
 import "./account.scss"
+import axios from 'axios'
 import { CabinetOrders } from './orders/CabinetOrders'
 import { CabinetArticles } from './articles/CabinetArticles'
 import { CabinetPersonal } from './personal/CabinetPersonal'
-import axios from 'axios'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { setArticles, setRequests } from '../../redux/account-slice'
 import { BACKEND_URL } from '../../data/url'

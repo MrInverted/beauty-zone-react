@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IArticleModel, ICommentModel } from './../data/models';
 import axios from "axios";
 import { BACKEND_URL } from "../data/url";
+import toast from "react-hot-toast";
 
 interface IThunkPayload {
   article: IArticleModel;
@@ -13,6 +14,7 @@ const fetchCard = createAsyncThunk(
   async (link: string, api) => {
     try {
       const { data } = await axios.get(`${BACKEND_URL}/api/article/${link}`);
+      toast.success("Данные о карточке получены");
       return data;
     } catch (error) {
       return api.rejectWithValue("Error while fetching single card")
