@@ -33,7 +33,7 @@ function RegisterTwo({ setStep }: IRegister) {
     dispatch(setSecondStepRegister(inc));
 
     try {
-      const { data } = await axios.post<IResponse>(`${BACKEND_URL}/auth/register`, { ...registerData, ...inc })
+      const { data } = await axios.post<IResponse>(`${BACKEND_URL}/api/auth/register`, { ...registerData, ...inc })
       setStep(3);
       reset();
     } catch (e) {
