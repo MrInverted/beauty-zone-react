@@ -22,26 +22,25 @@ function CardMakeRequest() {
   const { _id, _ownerId } = useAppSelector(store => store.card)
   const { handleSubmit, register, formState, reset, setError } = useForm<IForm>({ mode: "onChange", reValidateMode: "onChange" });
 
-  const onFormSubmit: SubmitHandler<IForm> = (data) => {
+  const onFormSubmit: SubmitHandler<IForm> = async (data) => {
     const toSend = {
       ...data,
       articleId: _id,
       ownerId: _ownerId
     }
 
-    axios.post(`${BACKEND_URL}/api/request`, toSend)
-      .then(() => {
-        reset();
-        dispatch(closeCardRequest());
-        toast.success("Запрос успешно отправлен");
-      })
-      .catch(e => {
-        const error = e as AxiosError<IResponse>;
-        const message = error.response?.data.err;
-        if (message) setError("root", { message });
-        toast.error("Что-то пошло не так...");
-        console.warn(message);
-      });
+    try {
+      await axios.post(`${BACKEND_URL}/api/request`, toSend);
+      reset();
+      dispatch(closeCardRequest());
+      toast.success("Запрос успешно отправлен");
+    } catch (e) {
+      const error = e as AxiosError<IResponse>;
+      const message = error.response?.data.err;
+      if (message) setError("root", { message });
+      toast.error("Что-то пошло не так...");
+      console.warn(message);
+    }
   }
 
   const onCloseRequestClick = () => dispatch(closeCardRequest())

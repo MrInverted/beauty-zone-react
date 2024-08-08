@@ -11,10 +11,14 @@ import { FieldsMore } from './FieldsMore';
 import { IArticleModel, IResponse } from '../../../data/models';
 import { useArticleFormWithDefaultValues } from '../../../hooks/useArticleFormWithDefaultValue';
 import { BACKEND_URL } from '../../../data/url';
+import { useAppDispatch, useAppSelector } from '../../../redux/store';
+import { setArticles } from '../../../redux/account-slice';
 
 
 
 function ArticleFromDb(props: IArticleModel) {
+  const dispatch = useAppDispatch();
+  const { ownerId } = useAppSelector(store => store.auth);
   const [isEditing, setIsEditing] = React.useState(false);
   const [isOpened, setIsOpened] = React.useState(false);
 
@@ -43,15 +47,20 @@ function ArticleFromDb(props: IArticleModel) {
   const onTitleClick = () => setIsOpened(!isOpened);
   const onEditClick: React.MouseEventHandler<HTMLButtonElement> = (e) => { e.preventDefault(); setIsEditing(true); }
   const onCancelClick = () => setIsEditing(false);
-  const onDeleteClick = () => {
-    axios.delete(`${BACKEND_URL}/api/article/${props._id}`)
-      .then(() => toast.success("Карточка успешно удалена"))
-      .catch((e) => {
-        const error = e as AxiosError<IResponse>;
-        const message = error.response?.data.err;
-        toast.error("Что-то пошло не так...")
-        console.warn(message);
-      })
+  const onDeleteClick = async () => {
+    try {
+      const deleteResponse = await axios.delete(`${BACKEND_URL}/api/article/${props._id}`);
+      toast.success("Карточка успешно удалена");
+
+      const getAllResponse = await axios.get(`${BACKEND_URL}/api/account/article/${ownerId}`);
+      dispatch(setArticles(getAllResponse.data.articles));
+      toast.success("Список карточек обновлен");
+    } catch (e) {
+      const error = e as AxiosError<IResponse>;
+      const message = error.response?.data.err;
+      toast.error("Что-то пошло не так...")
+      console.warn(message);
+    }
   }
 
 

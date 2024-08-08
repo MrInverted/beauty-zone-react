@@ -2,7 +2,7 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { closeCardMakeReview } from '../../redux/card-slice';
+import { closeCardMakeReview, fetchCard } from '../../redux/card-slice';
 
 import Modal from "../modal";
 import axios, { AxiosError } from 'axios';
@@ -23,7 +23,7 @@ interface IForm {
 
 function CardMakeReview() {
   const dispatch = useAppDispatch();
-  const { _id } = useAppSelector(store => store.card)
+  const { _id } = useAppSelector(store => store.card);
   const [fileUrl, setFileUrl] = React.useState("");
   const fileRef = React.useRef<HTMLInputElement>(null);
   const [stars, setStars] = React.useState({ selected: 0, hovered: 0 });
@@ -37,7 +37,7 @@ function CardMakeReview() {
   const setClassName = (index: number) => (stars.selected >= index + 1) ? 'hovered' :
     (stars.hovered >= index + 2) ? 'hovered' : '';
 
-  const onFormSubmit: SubmitHandler<IForm> = (data) => {
+  const onFormSubmit: SubmitHandler<IForm> = async (data) => {
     const rating = stars.selected;
 
     const toSend = {
@@ -45,22 +45,23 @@ function CardMakeReview() {
       rating,
       articleId: _id
     }
+    try {
+      const createResponse = await axios.postForm(`${BACKEND_URL}/api/comment/`, toSend)
+      reset();
+      setFileUrl("");
+      setStars({ selected: 0, hovered: 0 });
+      dispatch(closeCardMakeReview());
+      toast.success("Отзыв успешно отправлен");
 
-    axios.postForm(`${BACKEND_URL}/api/comment/`, toSend)
-      .then(success => {
-        reset();
-        setFileUrl("");
-        setStars({ selected: 0, hovered: 0 });
-        dispatch(closeCardMakeReview());
-        toast.success("Отзыв успешно отправлен");
-      })
-      .catch(e => {
-        const error = e as AxiosError<IResponse>;
-        const message = error.response?.data.err;
-        if (message) setError("root", { message });
-        toast.error("Что-то пошло не так...");
-        console.warn(message);
-      })
+      dispatch(fetchCard(_id));
+      toast.success("Информация в карточке успешно обновлена");
+    } catch (e) {
+      const error = e as AxiosError<IResponse>;
+      const message = error.response?.data.err;
+      if (message) setError("root", { message });
+      toast.error("Что-то пошло не так...");
+      console.warn(message);
+    }
   }
 
   const onInputFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {

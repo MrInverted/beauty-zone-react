@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { store } from "./store";
 import { BACKEND_URL } from "../data/url";
@@ -7,7 +8,6 @@ export const fetchArticlesWithSorting = createAsyncThunk(
   "sorting/fetch",
   async (inc, api) => {
     const { state, city, service, price, sort, page } = store.getState().sorting;
-
 
     const priceMin = price.min;
     const priceMax = price.max;
@@ -19,6 +19,7 @@ export const fetchArticlesWithSorting = createAsyncThunk(
 
     try {
       const { data } = await axios.get(url);
+      toast.success("Список карточек обновлен");
       return data;
     } catch (error) {
       console.log(error);
