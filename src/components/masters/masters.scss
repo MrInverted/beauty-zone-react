@@ -59,9 +59,10 @@
   &__item {
     border-radius: 6px;
     cursor: pointer;
+    outline: 1px solid rgb(223, 225, 227);
 
     &:hover {
-      outline: 1px solid rgb(223, 225, 227);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
   }
 
@@ -122,8 +123,6 @@
 
     color: #FF5EA6;
     font-weight: 700;
-
-    display: none;
   }
 
   &__price {

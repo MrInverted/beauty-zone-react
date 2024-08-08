@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Intro from '../components/intro';
 import Categories from '../components/categories';
 import Masters from '../components/masters';
@@ -10,7 +8,7 @@ import Card from '../components/card';
 import { useAppSelector } from '../redux/store';
 
 function IntroPage() {
-  const { isCard } = useAppSelector(store => store.card)
+  const { isCard } = useAppSelector(store => store.card);
 
   return <>
     <Intro page='intro' />

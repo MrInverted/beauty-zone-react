@@ -1,5 +1,6 @@
 import React from 'react'
 import "./plans.scss";
+import toast from 'react-hot-toast';
 
 export default function () {
   const base = [
@@ -23,6 +24,8 @@ export default function () {
     { isActive: false, text: "Возможность получать отзывы и формировать рейтинг" },
   ];
 
+  const onButtonClick = () => toast.error("На данной пет-проекте оплата не реализована")
+
 
   return (
     <section className="masters-plans">
@@ -44,7 +47,7 @@ export default function () {
 
                 <div className="masters-plans__price">
                   <span>$70/месяц</span>
-                  <button className="btn-light registration-trigger">Выбрать тариф</button>
+                  <button className="btn-light" onClick={onButtonClick}>Выбрать тариф</button>
                 </div>
               </div>
             </article>
@@ -63,7 +66,7 @@ export default function () {
 
                 <div className="masters-plans__price">
                   <span>$85/месяц</span>
-                  <button className="btn-light registration-trigger">Выбрать тариф</button>
+                  <button className="btn-light" onClick={onButtonClick}>Выбрать тариф</button>
                 </div>
               </div>
             </article>
@@ -82,7 +85,7 @@ export default function () {
 
                 <div className="masters-plans__price">
                   <span>$100/месяц</span>
-                  <button className="btn-light registration-trigger">Выбрать тариф</button>
+                  <button className="btn-light" onClick={onButtonClick}>Выбрать тариф</button>
                 </div>
               </div>
             </article>

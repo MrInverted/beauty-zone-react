@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React from 'react'
+import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useAppSelector } from '../redux/store';
 import { BACKEND_URL } from '../data/url';
@@ -18,10 +18,10 @@ interface IUsePasswordForm {
 
 function usePasswordForm({ setIsEditing }: IUsePasswordForm) {
   const { token } = useAppSelector(store => store.auth);
-  const { handleSubmit, register, formState, setValue, getValues, setError, clearErrors } = useForm<IForm>({ mode: "all" })
+  const { handleSubmit, register, formState, setValue, getValues, setError, clearErrors } = useForm<IForm>({ mode: "all" });
 
   const onFormSubmit: SubmitHandler<IForm> = (data) => {
-    const Authorization = `Bearer ${token}`
+    const Authorization = `Bearer ${token}`;
 
     axios.patch(`${BACKEND_URL}/api/account/personal/password`, data, { headers: { Authorization } })
       .then(success => console.log(success.data))
@@ -35,9 +35,9 @@ function usePasswordForm({ setIsEditing }: IUsePasswordForm) {
     setValue("newPasswordRepeated", value);
 
     if (value === getValues("newPassword")) {
-      clearErrors("root")
+      clearErrors("root");
     } else {
-      setError("root", { message: "Новые пароли не совпадают" })
+      setError("root", { message: "Новые пароли не совпадают" });
     }
   }
 

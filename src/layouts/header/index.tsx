@@ -7,9 +7,9 @@ import { removeIsAuth } from '../../redux/auth-slice';
 
 
 export default function () {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const [isOpened, setIsOpened] = React.useState(false);
-  const { isAuth } = useAppSelector(store => store.auth)
+  const { isAuth } = useAppSelector(store => store.auth);
 
   const onClickBurger = () => {
     if (isOpened) {
@@ -22,7 +22,7 @@ export default function () {
   }
 
   const onExitClick = () => {
-    dispatch(removeIsAuth())
+    dispatch(removeIsAuth());
 
     window.localStorage.removeItem("token");
     window.localStorage.removeItem("ownerId");

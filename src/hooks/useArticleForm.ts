@@ -1,8 +1,11 @@
-import axios from 'axios';
-import React from 'react'
+import React from 'react';
+import axios, { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
 import { SubmitHandler, useForm } from 'react-hook-form';
+
 import { useAppSelector } from '../redux/store';
 import { BACKEND_URL } from '../data/url';
+import { IResponse } from '../data/models';
 
 type FileType = File | null | undefined;
 
@@ -14,6 +17,7 @@ export interface IArticleForm {
   workingHours: string;
   phoneNumber: string;
   description: string;
+  service: string;
   services: [string, string][];
   portfolio: FileType[];
 }
@@ -27,9 +31,20 @@ type HandleImageType = (file: FileType, fieldName: keyof IArticleForm) => FileTy
 
 
 function useArticleForm({ setIsEditing }: IUseArticleForm) {
-  const { service } = useAppSelector(store => store.addArticle)
-  const { token } = useAppSelector(store => store.auth)
-  const { handleSubmit, register, formState, setValue, setError, clearErrors, trigger } = useForm<IArticleForm>({ mode: "all" })
+  const { service } = useAppSelector(store => store.addArticle);
+  const { token } = useAppSelector(store => store.auth);
+  const { handleSubmit,
+    register,
+    formState,
+    setValue,
+    setError,
+    clearErrors,
+    trigger } = useForm<IArticleForm>(
+      {
+        mode: "all",
+        defaultValues: { service: service }
+      }
+    )
 
   const inputPortfolioFileRef = React.useRef<HTMLInputElement>(null);
   const inputMainFileRef = React.useRef<HTMLInputElement>(null);
@@ -77,6 +92,7 @@ function useArticleForm({ setIsEditing }: IUseArticleForm) {
 
   const portfolioFile = register("portfolio", { onChange: onPortfolioInputFileChange });
   const mainFile = register("mainFile", { onChange: onMainImageInputFileChange });
+  register("service");
 
   React.useImperativeHandle(portfolioFile.ref, () => inputPortfolioFileRef.current);
   React.useEffect(() => { setValue("portfolio", portfolio) }, [portfolio]);
@@ -112,14 +128,22 @@ function useArticleForm({ setIsEditing }: IUseArticleForm) {
       }
     })
 
-    formData.set("service", service)
+
+    console.log(data)
 
     axiosWithCredentials.postForm(`${BACKEND_URL}/api/article`, formData)
       .then(res => console.log(res.data))
       .then(() => setIsEditing(false))
-      .catch(err => console.log(err.response.data));
-
-    console.log(data)
+      .catch(e => {
+        const error = e as AxiosError<IResponse>;
+        const message = error.response?.data.err;
+        if (message) {
+          setError("root", { message });
+        } else {
+          toast.error("Что-то пошло не так...");
+        }
+        console.warn(message);
+      });
   }
 
   const isError = formState.errors.priceMin?.message

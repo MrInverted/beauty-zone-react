@@ -1,14 +1,17 @@
 import React from 'react'
-import { useAppDispatch, useAppSelector } from '../redux/store';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { showLoginModal } from '../redux/modals-slice';
 import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { useAppDispatch, useAppSelector } from '../redux/store';
+import { showLoginModal } from '../redux/modals-slice';
 import { setIsAuth } from '../redux/auth-slice';
 import { setPersonalInfo } from '../redux/account-slice';
 import { BACKEND_URL } from '../data/url';
 
+
+
 function useToAccount() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { isAuth } = useAppSelector(store => store.auth);
   const [isVerified, setIsVerified] = React.useState(false);
 

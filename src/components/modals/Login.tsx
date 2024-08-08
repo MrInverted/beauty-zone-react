@@ -9,16 +9,11 @@ import { closeLoginRegisterRecoveryModals, showRecoveryModal, showRegisterModal 
 import { useAppDispatch } from '../../redux/store';
 import { setIsAuth } from '../../redux/auth-slice';
 import { BACKEND_URL } from '../../data/url';
+import { IResponse } from '../../data/models';
 
 interface IForm {
   email: string;
   password: string
-}
-
-interface IResponse {
-  err?: string;
-  success?: string;
-  ownerId?: string;
 }
 
 
@@ -36,8 +31,8 @@ function Login() {
       const { data } = await axios.post<IResponse>(`${BACKEND_URL}/api/auth/login`, inc);
       dispatch(setIsAuth({ token: data.success, ownerId: data.ownerId }));
       dispatch(closeLoginRegisterRecoveryModals());
-      reset();
       navigate("/account");
+      reset();
 
       window.localStorage.setItem("token", data.success as string);
       window.localStorage.setItem("ownerId", data.ownerId as string);
@@ -47,8 +42,9 @@ function Login() {
       if (message) {
         setError("root", { message });
       } else {
-        toast.error("Что-то пошло не так...", { position: 'top-center' })
+        toast.error("Что-то пошло не так...")
       }
+      console.warn(message);
     }
   }
 

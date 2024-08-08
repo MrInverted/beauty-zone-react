@@ -1,6 +1,4 @@
-import React from 'react'
-
-import Categories from '../components/categories'
+import Categories from '../components/categories';
 import Offer from '../components/offer';
 import About from '../components/about'
 import Intro from '../components/intro';

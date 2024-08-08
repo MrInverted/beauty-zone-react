@@ -19,7 +19,7 @@ function MastersCardPreview(props: Props) {
         <div className="masters__name">
           <h3>{props.ownerId?.name}</h3>
 
-          {props.isPremium && props.rating > 0 && <>
+          {props.rating > 0 && <>
             <div className="masters__rating">
               <img src="/images/masters-rating-star-filled.svg" alt="" />
               <span>{props.rating}</span>

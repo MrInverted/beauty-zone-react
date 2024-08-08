@@ -6,8 +6,11 @@ import { Fields } from './Fields';
 import { Buttons } from '../Buttons';
 import { Error } from "../Error"
 import { FieldsMore } from './FieldsMore';
-import { IArticleModel } from '../../../data/models';
+import { IArticleModel, IResponse } from '../../../data/models';
 import { useArticleFormWithDefaultValues } from '../../../hooks/useArticleFormWithDefaultValue';
+import axios, { AxiosError } from 'axios';
+import { BACKEND_URL } from '../../../data/url';
+import toast from 'react-hot-toast';
 
 
 
@@ -40,7 +43,16 @@ function ArticleFromDb(props: IArticleModel) {
   const onTitleClick = () => setIsOpened(!isOpened);
   const onEditClick: React.MouseEventHandler<HTMLButtonElement> = (e) => { e.preventDefault(); setIsEditing(true); }
   const onCancelClick = () => setIsEditing(false);
-  const onDeleteClick = () => { }
+  const onDeleteClick = () => {
+    axios.delete(`${BACKEND_URL}/api/article/${props._id}`)
+      .then(() => toast.success("Карточка успешно удалена"))
+      .catch((e) => {
+        const error = e as AxiosError<IResponse>;
+        const message = error.response?.data.err;
+        if (message) toast.error("Что-то пошло не так...")
+        console.warn(message);
+      })
+  }
 
 
 

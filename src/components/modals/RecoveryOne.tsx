@@ -7,6 +7,7 @@ import axios, { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { setEmail } from '../../redux/register-slice';
 import { BACKEND_URL } from '../../data/url';
+import { IResponse } from '../../data/models';
 
 interface IForm {
   email: string;
@@ -14,11 +15,6 @@ interface IForm {
 
 interface IRecovery {
   setStep: React.Dispatch<React.SetStateAction<number>>;
-}
-
-interface IResponse {
-  err?: string;
-  success?: string;
 }
 
 
@@ -39,8 +35,9 @@ function RecoveryOne({ setStep }: IRecovery) {
       if (message) {
         setError("root", { message });
       } else {
-        toast.error("Что-то пошло не так...", { position: 'top-center' })
+        toast.error("Что-то пошло не так...")
       }
+      console.warn(message);
     }
   }
 

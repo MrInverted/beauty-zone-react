@@ -54,3 +54,9 @@ export interface IUserModel {
   street: string;
   building: string;
 }
+
+export interface IResponse {
+  err?: string;
+  success?: string;
+  ownerId?: string;
+}

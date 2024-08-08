@@ -9,6 +9,7 @@ import { setSecondStepRegister } from '../../redux/register-slice';
 import { IntroSearchState } from '../intro/IntroSearchState';
 import { IntroSearchCity } from '../intro/IntroSeacrhCity';
 import { BACKEND_URL } from '../../data/url';
+import { IResponse } from '../../data/models';
 
 interface IForm {
   state: string;
@@ -20,12 +21,6 @@ interface IForm {
 interface IRegister {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }
-
-interface IResponse {
-  err?: string;
-  success?: string;
-}
-
 
 
 
@@ -47,8 +42,9 @@ function RegisterTwo({ setStep }: IRegister) {
       if (message) {
         setError("root", { message });
       } else {
-        toast.error("Что-то пошло не так...", { position: 'top-center' })
+        toast.error("Что-то пошло не так...");
       }
+      console.warn(message);
     }
   }
 

@@ -8,6 +8,7 @@ import Modal from "../modal";
 import axios, { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { BACKEND_URL } from '../../data/url';
+import { IResponse } from '../../data/models';
 
 const defaultStars = new Array(5).fill("")
 
@@ -16,11 +17,6 @@ interface IForm {
   email: string;
   text: string;
   file?: File;
-}
-
-interface IResponse {
-  err?: string;
-  success?: string;
 }
 
 
@@ -52,10 +48,11 @@ function CardMakeReview() {
 
     axios.postForm(`${BACKEND_URL}/api/comment/`, toSend)
       .then(success => {
-        console.log(success);
         reset();
-        setStars({ selected: 0, hovered: 0 });
         setFileUrl("");
+        setStars({ selected: 0, hovered: 0 });
+        dispatch(closeCardMakeReview());
+        toast.success("Отзыв успешно отправлен");
       })
       .catch(e => {
         const error = e as AxiosError<IResponse>;
@@ -63,7 +60,8 @@ function CardMakeReview() {
         if (message) {
           setError("root", { message });
         } else {
-          toast.error("Что-то пошло не так...", { position: 'top-center' });
+          toast.error("Что-то пошло не так...");
+          console.warn(message);
         }
       })
   }

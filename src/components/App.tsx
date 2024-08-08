@@ -39,7 +39,7 @@ function App() {
     {isRecovery && <Recovery />}
     {isRegister && <Register />}
 
-    <Toaster />
+    <Toaster position='bottom-right' />
   </>;
 }
 

@@ -1,9 +1,12 @@
-import axios from 'axios';
-import React from 'react'
+import React from 'react';
+import axios, { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useAppSelector } from '../redux/store';
+
+import { useAppDispatch, useAppSelector } from '../redux/store';
 import { BACKEND_URL } from '../data/url';
-import { IArticleModel } from '../data/models';
+import { IArticleModel, IResponse } from '../data/models';
+import { setArticles } from '../redux/account-slice';
 
 type FileType = File | null | undefined;
 
@@ -15,6 +18,7 @@ export interface IArticleFormWithDefaultValue {
   workingHours: string;
   phoneNumber: string;
   description: string;
+  service: string;
   services: [string, string][];
   portfolio: (FileType | string)[];
 }
@@ -28,8 +32,9 @@ type HandleImageType = (file: FileType, fieldName: keyof IArticleFormWithDefault
 
 
 function useArticleFormWithDefaultValues(props: IUseArticleForm) {
-  const { service } = useAppSelector(store => store.addArticle)
-  const { token } = useAppSelector(store => store.auth)
+  const dispatch = useAppDispatch();
+  const { token, ownerId } = useAppSelector(store => store.auth);
+
   const { handleSubmit, register, formState, setValue, setError, clearErrors, trigger } = useForm<IArticleFormWithDefaultValue>({
     mode: "all",
     defaultValues: {
@@ -41,7 +46,8 @@ function useArticleFormWithDefaultValues(props: IUseArticleForm) {
       phoneNumber: props.phoneNumber,
       description: props.description,
       services: props.services.map(el => [el.split("---").at(0), el.split("---").at(1)]),
-      portfolio: props.portfolioLink
+      portfolio: props.portfolioLink,
+      service: props.service,
     }
   })
 
@@ -91,12 +97,13 @@ function useArticleFormWithDefaultValues(props: IUseArticleForm) {
 
   const portfolioFile = register("portfolio", { onChange: onPortfolioInputFileChange });
   const mainFile = register("mainFile", { onChange: onMainImageInputFileChange });
+  register("service");
 
   React.useImperativeHandle(portfolioFile.ref, () => inputPortfolioFileRef.current);
   React.useEffect(() => { setValue("portfolio", portfolio) }, [portfolio]);
   React.useEffect(() => { setValue("mainFile", mainImage) }, [mainImage]);
 
-  const onFormSubmit: SubmitHandler<IArticleFormWithDefaultValue> = (data) => {
+  const onFormSubmit: SubmitHandler<IArticleFormWithDefaultValue> = async (data) => {
     if (data.mainFile) {
       clearErrors("mainFile")
     } else {
@@ -126,14 +133,26 @@ function useArticleFormWithDefaultValues(props: IUseArticleForm) {
       }
     })
 
-    formData.set("service", service)
+    console.log(data);
 
-    // axiosWithCredentials.patchForm(`${BACKEND_URL}/api/article`, formData)
-    //   .then(res => console.log(res.data))
-    //   .then(() => props.setIsEditing(false))
-    //   .catch(err => console.log(err.response.data));
+    try {
+      const updateResponse = await axiosWithCredentials.putForm(`${BACKEND_URL}/api/article/${props._id}`, formData);
+      props.setIsEditing(false);
+      console.log(updateResponse.data);
 
-    // console.log(data)
+      const getAllResponse = await axios.get(`${BACKEND_URL}/api/account/article/${ownerId}`)
+      dispatch(setArticles(getAllResponse.data.articles))
+      console.log(getAllResponse.data);
+    } catch (e) {
+      const error = e as AxiosError<IResponse>;
+      const message = error.response?.data.err;
+      if (message) {
+        setError("root", { message });
+      } else {
+        toast.error("Что-то пошло не так...")
+      }
+      console.warn(message);
+    }
   }
 
   const isError = formState.errors.priceMin?.message
