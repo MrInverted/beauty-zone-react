@@ -9,7 +9,7 @@ import { BACKEND_URL } from '../../../data/url';
 
 
 
-function SingleOrder({ name, phone, isChecked, createdAt, _id }: IRequest) {
+function SingleOrder({ name, phone, isChecked, createdAt, _id, text }: IRequest) {
   const dispatch = useAppDispatch();
   const { ownerId } = useAppSelector(store => store.auth);
 
@@ -36,6 +36,7 @@ function SingleOrder({ name, phone, isChecked, createdAt, _id }: IRequest) {
       <span>{name}</span>
       <span>{phone}</span>
       <input type="checkbox" checked={isChecked} onChange={onCheckboxChange} />
+      <p>{text}</p>
     </div>
   )
 }

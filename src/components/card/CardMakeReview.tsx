@@ -134,12 +134,12 @@ function CardMakeReview() {
         <form onSubmit={handleSubmit(onFormSubmit)}>
           <input type="text" placeholder="Имя" autoComplete='off'  {...register("name", {
             required: { value: true, message: "Имя обязательно к заполнению" },
-            minLength: { value: 3, message: "Имя минимум 3 символа" }
+            minLength: { value: 3, message: "Имя слишком короткое" }
           })} />
 
           <input type="text" placeholder="E-mail" autoComplete='off' {...register("email", {
             required: { value: true, message: "E-mail обязателен к заполнению" },
-            minLength: { value: 10, message: "E-mail минимум 10 символов" },
+            minLength: { value: 10, message: "E-mail слишком короткий" },
             pattern: { value: /\S{3,}@\w{2,}\.\w{2,}/gi, message: "E-mail неверного формата" }
           })} />
 
@@ -147,7 +147,8 @@ function CardMakeReview() {
 
           <textarea placeholder="Напишите про свои впечатления" autoComplete='off' {...register("text", {
             required: { value: true, message: "Текст обязателен к заполнению" },
-            minLength: { value: 10, message: "Текст минимум 10 символов" }
+            minLength: { value: 10, message: "Текст слишком короткий" },
+            maxLength: { value: 150, message: "Текст слишком длинный" }
           })} />
 
           <div className="make-review__add-photo" onClick={onAddPhotoClick}>

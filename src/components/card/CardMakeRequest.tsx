@@ -58,7 +58,6 @@ function CardMakeRequest() {
           <div className="modal__error">
             <img src="/images/modal-error.svg" alt="" />
             <span>{isError}</span>
-            {/* <span>Неверный адрес электронной почты или пароль</span> */}
           </div>
         </>}
 
@@ -76,7 +75,8 @@ function CardMakeRequest() {
 
           <textarea placeholder="Комментарий" autoComplete='off' {...register("text", {
             required: { value: true, message: "Текст обязателен к заполнению" },
-            minLength: { value: 10, message: "Текст слишком короткий" }
+            minLength: { value: 10, message: "Текст слишком короткий" },
+            maxLength: { value: 150, message: "Текст слишком длинный" }
           })} />
 
           <button
