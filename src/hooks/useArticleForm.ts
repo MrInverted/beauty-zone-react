@@ -138,12 +138,13 @@ function useArticleForm({ setIsEditing }: IUseArticleForm) {
       const createRes = await axiosWithCredentials.postForm(`${BACKEND_URL}/api/article`, formData)
       setIsEditing(false);
       console.log(createRes.data);
+      toast.success("Запрос успешно отправлен");
 
       const getAllResponse = await axios.get(`${BACKEND_URL}/api/account/article/${ownerId}`)
       dispatch(setArticles(getAllResponse.data.articles));
       dispatch(removeAnArticleForm());
       console.log(getAllResponse.data);
-      toast.success("Запрос успешно отправлен");
+      toast.success("Список карточек обновлен");
     } catch (e) {
       const error = e as AxiosError<IResponse>;
       const message = error.response?.data.err;

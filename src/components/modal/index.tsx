@@ -4,7 +4,7 @@ import "./modal.scss";
 interface IModal {
   title?: string;
   closeModal: () => void;
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 

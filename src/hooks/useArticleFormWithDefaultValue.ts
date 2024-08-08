@@ -139,11 +139,12 @@ function useArticleFormWithDefaultValues(props: IUseArticleForm) {
       const updateResponse = await axiosWithCredentials.putForm(`${BACKEND_URL}/api/article/${props._id}`, formData);
       props.setIsEditing(false);
       console.log(updateResponse.data);
+      toast.success("Запрос успешно отправлен");
 
       const getAllResponse = await axios.get(`${BACKEND_URL}/api/account/article/${ownerId}`)
       dispatch(setArticles(getAllResponse.data.articles))
       console.log(getAllResponse.data);
-      toast.success("Запрос успешно отправлен");
+      toast.success("Список карточек обновлен");
     } catch (e) {
       const error = e as AxiosError<IResponse>;
       const message = error.response?.data.err;
