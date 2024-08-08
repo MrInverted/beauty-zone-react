@@ -25,7 +25,7 @@ function SingleOrder({ name, phone, isChecked, createdAt, _id }: IRequest) {
     axios.get(`${BACKEND_URL}/api/account/request/${ownerId}`)
       .then(success => {
         dispatch(setRequests(success.data.requests));
-        toast.success("Список запросов обновлен");
+        toast.success("Список заявок обновлен");
       })
       .catch(err => console.log(err.response?.data));
   }

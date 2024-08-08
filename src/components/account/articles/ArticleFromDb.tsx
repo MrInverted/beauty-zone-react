@@ -18,7 +18,7 @@ import { setArticles } from '../../../redux/account-slice';
 
 function ArticleFromDb(props: IArticleModel) {
   const dispatch = useAppDispatch();
-  const { ownerId } = useAppSelector(store => store.auth);
+  const { ownerId, token } = useAppSelector(store => store.auth);
   const [isEditing, setIsEditing] = React.useState(false);
   const [isOpened, setIsOpened] = React.useState(false);
 
@@ -48,8 +48,13 @@ function ArticleFromDb(props: IArticleModel) {
   const onEditClick: React.MouseEventHandler<HTMLButtonElement> = (e) => { e.preventDefault(); setIsEditing(true); }
   const onCancelClick = () => setIsEditing(false);
   const onDeleteClick = async () => {
+    const axiosWithCredentials = axios.create({
+      headers:
+        { Authorization: `Bearer ${token}` }
+    })
+
     try {
-      const deleteResponse = await axios.delete(`${BACKEND_URL}/api/article/${props._id}`);
+      const deleteResponse = await axiosWithCredentials.delete(`${BACKEND_URL}/api/article/${props._id}`);
       toast.success("Карточка успешно удалена");
 
       const getAllResponse = await axios.get(`${BACKEND_URL}/api/account/article/${ownerId}`);
