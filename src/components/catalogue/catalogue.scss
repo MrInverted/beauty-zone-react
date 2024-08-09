@@ -324,8 +324,8 @@
     font-size: 14px;
 
     &:hover {
-      background-color: unset;
-      color: black;
+      background-color: unset !important;
+      color: black !important;
     }
 
     img {

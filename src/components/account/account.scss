@@ -1102,26 +1102,38 @@
   }
 }
 
-#plans-first {
-  display: none;
+
+.cabinet-article-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 30px;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+
+  span {
+    font-size: 20px;
+    font-weight: 600;
+    color: #383838;
+  }
 }
 
-#plans-second {
-  display: none;
+.cabinet-articles .folded.opened {
+  grid-template-rows: auto 1fr;
+
+  .cabinet-article-title {
+    img {
+      transform: rotate(180deg);
+    }
+  }
 }
 
-#plans-third {
-  display: none;
+.cabinet-articles .cabinet__article {
+  padding-top: 0;
 }
 
-#plans-fourth {
-  display: none;
-}
-
-#cancel-first {
-  display: block;
-}
-
-#cancel-second {
-  display: none;
+.cabinet-articles .cabinet__title .row {
+  flex-direction: row-reverse;
 }

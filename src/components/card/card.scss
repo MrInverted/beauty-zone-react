@@ -126,7 +126,6 @@
   &__text {
     font-size: 18px;
     line-height: 140%;
-    margin: 0 12px;
     margin-bottom: 48px;
 
     @media (max-width: 600px) {
@@ -183,6 +182,12 @@
     svg {
       stroke: #B0A6BD;
     }
+  }
+
+  .swiper-button-lock {
+    visibility: hidden;
+    cursor: unset;
+    opacity: 0;
   }
 
   .swiper-button-prev {

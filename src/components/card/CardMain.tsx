@@ -67,13 +67,12 @@ function CardMain() {
     <p className="card__text">{info.description}</p>
 
     <div className="card__services">
-      <h4>Услуги</h4>
-
       <ul>
         <li>
-          <b>Название</b>
+          <b>Услуга</b>
           <b>Цена</b>
         </li>
+
         {info.services.map((el, index) => (
           <li key={index}>
             <span>{el.split("---").at(0)}</span>

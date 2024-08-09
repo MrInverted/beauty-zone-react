@@ -38,7 +38,14 @@ function Article() {
     onMainImageDelete
   } = useArticleForm({ setIsEditing })
 
-  const onTitleClick = () => setIsOpened(!isOpened);
+  const onTitleClick = () => {
+    if (isOpened) {
+      setIsOpened(false);
+      setIsEditing(false);
+    } else {
+      setIsOpened(true);
+    }
+  }
   const onEditClick: React.MouseEventHandler<HTMLButtonElement> = (e) => { e.preventDefault(); setIsEditing(true); }
   const onCancelClick = () => setIsEditing(false);
 
@@ -47,7 +54,7 @@ function Article() {
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className='article-shadow'>
       <div className={isOpened ? "folded opened" : "folded"}>
-        <div className="row flex-row" onClick={onTitleClick}>
+        <div className="cabinet-article-title" onClick={onTitleClick}>
           <span>{service}</span>
           <img src="/images/account-chevron-down.svg" alt="" />
         </div>
@@ -55,8 +62,6 @@ function Article() {
         <div className="min-height-0">
           <div className="cabinet__article">
             <div className="cabinet__title">
-              <h2 onClick={onTitleClick}>{service}</h2>
-
               <Buttons {...{ isEditing, onCancelClick, onEditClick }} />
             </div>
 

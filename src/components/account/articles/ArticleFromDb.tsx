@@ -44,7 +44,14 @@ function ArticleFromDb(props: IArticleModel) {
     onMainImageDelete
   } = useArticleFormWithDefaultValues({ setIsEditing, ...props })
 
-  const onTitleClick = () => setIsOpened(!isOpened);
+  const onTitleClick = () => {
+    if (isOpened) {
+      setIsOpened(false);
+      setIsEditing(false);
+    } else {
+      setIsOpened(true);
+    }
+  }
   const onEditClick: React.MouseEventHandler<HTMLButtonElement> = (e) => { e.preventDefault(); setIsEditing(true); }
   const onCancelClick = () => setIsEditing(false);
   const onDeleteClick = async () => {
@@ -73,7 +80,7 @@ function ArticleFromDb(props: IArticleModel) {
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className='article-shadow'>
       <div className={isOpened ? "folded opened" : "folded"}>
-        <div className="row flex-row" onClick={onTitleClick}>
+        <div className="cabinet-article-title" onClick={onTitleClick}>
           <span>{props.service}</span>
           <img src="/images/account-chevron-down.svg" alt="" />
         </div>
@@ -81,8 +88,6 @@ function ArticleFromDb(props: IArticleModel) {
         <div className="min-height-0">
           <div className="cabinet__article">
             <div className="cabinet__title">
-              <h2 onClick={onTitleClick}>{props.service}</h2>
-
               <Buttons {...{ isEditing, onCancelClick, onEditClick }} />
             </div>
 
