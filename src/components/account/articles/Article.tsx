@@ -55,7 +55,7 @@ function Article() {
     <form onSubmit={handleSubmit(onFormSubmit)} className='article-shadow'>
       <div className={isOpened ? "folded opened" : "folded"}>
         <div className="cabinet-article-title" onClick={onTitleClick}>
-          <span>{service}</span>
+          <span>{service} (не сохранено)</span>
           <img src="/images/account-chevron-down.svg" alt="" />
         </div>
 

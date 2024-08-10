@@ -66,22 +66,25 @@ function CardMain() {
 
     <p className="card__text">{info.description}</p>
 
-    <div className="card__services">
-      <ul>
-        <li>
-          <b>Услуга</b>
-          <b>Цена</b>
-        </li>
-
-        {info.services.map((el, index) => (
-          <li key={index}>
-            <span>{el.split("---").at(0)}</span>
-            <span>{el.split("---").at(1)}</span>
+    {info?.services.length && <>
+      <div className="card__services">
+        <ul>
+          <li>
+            <b>Услуга</b>
+            <b>Цена</b>
           </li>
-        ))}
 
-      </ul>
-    </div>
+          {Array.isArray(info.services) && info?.services.map((el, index) => (
+            <li key={index}>
+              <span>{el.split("---").at(0)}</span>
+              <span>{el.split("---").at(1)}</span>
+            </li>
+          ))}
+
+        </ul>
+      </div>
+    </>}
+
 
     <div className="card__portfolio">
       <h4>Портфолио</h4>

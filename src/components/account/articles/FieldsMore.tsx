@@ -7,7 +7,7 @@ interface IFieldsMore {
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
   setError: UseFormSetError<any>;
-  services?: [string, string][]
+  services?: [string, string][];
 }
 
 type ServicesType = [string, string]
